@@ -1,0 +1,146 @@
+@use "sass:color";
+$color-blue: #11438F;
+$color-light-blue: #9BC6F3;
+
+.illustration-section {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+
+    .ellipse-1 {
+        position: absolute;
+        width: 100%;
+        max-width: 600px;
+        height: 100%;
+        background-color: $color-blue;
+        clip-path: ellipse(85% 100% at 15% 50%);
+        z-index: 1;
+    }
+
+    .ellipse-2 {
+        position: absolute;
+        width: 98%;
+        max-width: 585px;
+        height: 100%;
+        background: radial-gradient(circle at 0% 50%,
+                #FFFFFF 0%,
+                #FFFFFF 40%,
+                #D6E9FF 75%,
+                #9BC6F3 100%);
+        clip-path: ellipse(90% 100% at 10% 58%);
+        z-index: 2;
+
+        .hospital-bg {
+            position: absolute;
+            width: 100%;
+            height: auto;
+            max-height: 60%;
+            object-fit: cover;
+            bottom: 0;
+            left: 0;
+            opacity: 0.9;
+            -webkit-mask-image: linear-gradient(to top, black 60%, transparent 100%);
+            mask-image: linear-gradient(to top, black 60%, transparent 100%);
+        }
+
+        .content-overlay {
+            position: relative;
+            z-index: 10;
+            padding-top: 5vh;
+            padding-left: 10%;
+
+            .title {
+                color: $color-blue;
+                font-size: clamp(2rem, 4vw, 5.3rem);
+                max-width: 80%;
+                line-height: 1.1;
+                font-weight: 400;
+            }
+        }
+    }
+
+    .doctor-img {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        height: 80%;
+        max-height: 500px;
+        z-index: 5;
+        pointer-events: none;
+    }
+}
+
+.right-panel {
+    .custom-input-group {
+        height: 55px; 
+        display: flex;
+        align-items: center;
+        background-color: #FFFFFF;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1.5px solid #A5C2F4;
+
+        .input-group-text {
+            border: none;
+            background: transparent;
+            padding: 0 15px;
+        }
+
+        .form-control {
+            border: none;
+            background: transparent;
+            height: 100%;
+
+            &:focus {
+                background: transparent;
+                box-shadow: none;
+            }
+        }
+    }
+
+    .p-cursor {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s;
+
+        &:hover {
+            color: $color-blue;
+        }
+    }
+
+    .custom-checkbox {
+        .form-check-input {
+            border-color: #A5C2F4;
+            cursor: pointer;
+
+            &:checked {
+                background-color: $color-blue;
+                border-color: $color-blue;
+            }
+        }
+
+        .form-check-label {
+            font-size: 0.9rem;
+            color: #666;
+            cursor: pointer;
+        }
+    }
+
+    
+    .btn-login {
+        background-color: $color-blue;
+        color: white;
+        padding: 0.8rem;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        border: none;
+        transition: 0.3s;
+
+        &:hover {
+            background-color: color.adjust($color-blue, $lightness: -10%);
+            box-shadow: 0 4px 12px rgba(17, 67, 143, 0.2);
+        }
+    }
+}
