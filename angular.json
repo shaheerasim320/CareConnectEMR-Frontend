@@ -65,6 +65,10 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "hmr": false,
+            "liveReload": true
+          },
           "configurations": {
             "production": {
               "buildTarget": "care-connect-emr:build:production"

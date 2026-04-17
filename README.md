@@ -201,27 +201,23 @@ ng e2e
 
 ## 🔐 Authentication Flow
 
-Login Request
+Access Token
+   ↓
+Stored in memory (Angular service)
 
-     ↓
+Refresh Token
+   ↓
+Stored in HttpOnly Cookie
 
-Access Token + Refresh Token
+Interceptor
+   ↓
+Adds Authorization header
 
-     ↓
-
-Stored in Local Storage
-
-     ↓
-
-HTTP Interceptor attaches token
-
-     ↓
-
-401 → Auto refresh token
-
-     ↓
-
-Request retried automatically
+401
+   ↓
+refresh-token endpoint
+   ↓
+retry request
 
 ## 🧠 Key Architecture Patterns
 
@@ -303,10 +299,6 @@ This project is for educational and professional development purposes.
 
 ## 👨‍💻 Author
 
-Built with ❤️ for healthcare digitization using Angular + .NET
-
-
-
-
-
-
+**Shaheer Asim**  
+Software Engineer — .NET · Angular · SQL Server  
+[GitHub](https://github.com/shaheerasim320) · [LinkedIn](https://linkedin.com/in/shaheer-asim-4b08a2367)

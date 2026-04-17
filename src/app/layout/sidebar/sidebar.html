@@ -1,0 +1,33 @@
+<div class="sidebar d-flex flex-column">
+    <ul class="nav flex-column">
+        @for (item of visibleNavItems(); track item.route){
+            <li class="nav-item">
+                <a [routerLink]="item.route" routerLinkActive="active-link" class="nav-link d-flex align-items-center gap-3 text-muted">
+                    <mat-icon>{{ item.icon }}</mat-icon>
+                    @if (!layoutService.isCollapsed()){
+                        <span class="label">{{ item.label }}</span>
+                    }
+                </a>
+            </li>
+        }
+    </ul>
+    
+    <div class="mt-auto"></div>
+
+    <div class="user-mobile-footer border-top d-lg-none position-absolute bottom-0 p-4">
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="rounded-circle bg-bluish p-2 d-flex align-items-center">
+                <mat-icon>person</mat-icon>
+            </div>
+            <div class="info d-flex flex-column">
+                <span class="text-blue fw-bold small">{{user()?.fullName | uppercase}}</span>
+                <span class="text-muted extra-small">{{user()?.role | uppercase}}</span>
+            </div>
+        </div>
+        
+        <button (click)="logout()" class="btn btn-outline-danger btn-sm w-100 d-flex align-items-center justify-content-center gap-2">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+        </button>
+    </div>
+</div>

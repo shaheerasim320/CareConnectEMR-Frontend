@@ -71,32 +71,47 @@ $color-light-blue: #9BC6F3;
 }
 
 .right-panel {
-    .custom-input-group {
-        height: 55px; 
-        display: flex;
-        align-items: center;
-        background-color: #FFFFFF;
-        border-radius: 8px;
-        overflow: hidden;
-        border: 1.5px solid #A5C2F4;
+    .login-box {
+        max-width: 400px;
+        box-shadow: 0 4px 12px rgba(17, 67, 143, 0.1);
 
-        .input-group-text {
-            border: none;
-            background: transparent;
-            padding: 0 15px;
+        @media (max-width: 576px) {
+            max-width: 330px;
+        }
+        
+        .welcome-para {
+            font-size: small;
+        }
+
+        .label {
+            font-size: small;
         }
 
         .form-control {
-            border: none;
-            background: transparent;
-            height: 100%;
+            font-size: 0.85rem;      
+            padding: 0.4rem 0.75rem; 
+            height: auto;
 
-            &:focus {
-                background: transparent;
-                box-shadow: none;
+            &::placeholder {
+                font-size: 0.75rem;  
+                color: #adb5bd;    
             }
         }
+
+        .input-group-text {
+            padding: 0 0.5rem;  
+            border-left: none;
+            background-color: transparent;
+            
+            mat-icon {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+            }
+        }
+
     }
+
 
     .p-cursor {
         cursor: pointer;
@@ -128,13 +143,13 @@ $color-light-blue: #9BC6F3;
         }
     }
 
-    
+
     .btn-login {
         background-color: $color-blue;
         color: white;
-        padding: 0.8rem;
         border-radius: 8px;
-        font-size: 1.1rem;
+        padding: 0.5rem 0;
+        font-size: 0.875rem;
         border: none;
         transition: 0.3s;
 

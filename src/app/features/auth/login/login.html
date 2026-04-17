@@ -12,29 +12,24 @@
         </div>
 
         <div class="col-12 col-lg-5 d-flex align-items-center justify-content-center right-panel">
-            <div class="p-4 w-100" style="max-width: 450px;">
+            <div class="p-4 w-100 border rounded-3 login-box">
                 <div class="logo text-center">
                     <img src="assets/images/logo.png" alt="logo" width="220px">
                 </div>
 
-                <h2 class="mb-1 text-center">Welcome back</h2>
-                <p class="mb-4 text-muted text-center">Please enter your details to sign in</p>
+                <h2 class="mb-0 text-center fs-4">Welcome back</h2>
+                <p class="mb-4 text-muted text-center welcome-para">Please enter your details to sign in</p>
 
                 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-2">
-                    <div class="input-group mb-3 custom-input-group" [class.border-danger]="loginForm.get('identifier')?.touched && loginForm.get('identifier')?.invalid">
-                        <span class="input-group-text bg-transparent border-end-0">
-                            <mat-icon matPrefix>person</mat-icon>
-                        </span>
-                        <input type="text" class="form-control border-start-0" placeholder="username/email"
-                            formControlName="identifier">
-                    </div>
 
-                    <div class="input-group mb-3 custom-input-group" [class.border-danger]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
-                        <span class="input-group-text">
-                            <mat-icon matPrefix>lock</mat-icon>
-                        </span>
-                        <input [type]="hidePassword ? 'password' : 'text'" class="form-control" placeholder="password"
-                            formControlName="password">
+                    <label for="identifier" class="fw-bold label">Username or Email</label>
+                    <input type="text" id="identifier" class="form-control mb-2" placeholder="username/email"
+                        formControlName="identifier"
+                        [class.border-danger]="loginForm.get('identifier')?.touched && loginForm.get('identifier')?.invalid">
+
+                    <label for="password" class="fw-bold label">Password</label>
+                    <div class="input-group mb-2">
+                        <input [type]="hidePassword ? 'password' : 'text'" class="form-control border-end-0" id="password" placeholder="password" formControlName="password" [class.border-danger]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
                         <span class="input-group-text p-cursor" (click)="hidePassword = !hidePassword">
                             <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </span>
@@ -42,7 +37,7 @@
 
                     <div class="d-flex align-items-center mb-3">
                         <div class="form-check custom-checkbox">
-                            <input class="form-check-input" type="checkbox" id="remember">
+                            <input class="form-check-input" type="checkbox" id="remember" formControlName="rememberMe">
                             <label class="form-check-label" for="remember">
                                 Remember me
                             </label>

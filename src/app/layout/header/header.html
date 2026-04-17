@@ -1,0 +1,36 @@
+<div class="header px-3 border-bottom d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+        <a routerLink="/" class="logo me-4">
+            <img src="assets/images/logo.png" alt="logo" width="120px">
+        </a>
+        <img src="assets/icons/toggle-icon.svg" alt="toggle" class="toggle-icon ms-5 d-none d-lg-block" (click)="onToggleClick()">
+    </div>
+
+    <button class="hamburger d-lg-none" (click)="onToggleClick()">
+        <mat-icon>menu</mat-icon>
+    </button>
+
+    <div class="position-relative d-none d-lg-flex">
+        <div class="user d-none d-lg-flex gap-3 align-items-center" (click)="toggleProfile()" [class.active]="isProfileOpen">
+            <div class="info d-flex flex-column align-items-end">
+                <span class="text-blue fw-bold">{{user()?.fullName | uppercase}}</span>
+                <span class="text-muted fw-bold">{{user()?.role | uppercase}}</span>
+            </div>
+            <div class="d-flex align-items-center rounded-circle bg-bluish p-2">
+                <mat-icon>person</mat-icon>
+            </div>
+        </div>
+
+        @if (isProfileOpen) {
+            <div class="custom-dropdown shadow-sm border rounded">
+                <button (click)="logout()" class="dropdown-item d-flex align-items-center gap-2">
+                    <mat-icon>logout</mat-icon>
+                    <span>Logout</span>
+                </button>
+            </div>
+            
+            <div class="dropdown-backdrop" (click)="isProfileOpen = false"></div>
+        }
+    </div>
+
+</div>

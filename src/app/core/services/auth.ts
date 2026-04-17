@@ -2,10 +2,9 @@ import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LoginRequest } from '../models/auth/login-request';
 import { AuthResponse } from '../models/auth/auth-response';
-import { RefreshTokenRequest } from '../models/auth/refresh-token-request';
 import { User } from '../models/auth/user';
 import { environment } from '../../../environments/environment';
-import { map, tap } from 'rxjs';
+import { catchError, finalize, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { ApiResponse } from '../models/api-response';
 
@@ -18,68 +17,64 @@ export class Auth {
 
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
-
+  private accessToken: string | null = null;
   currentUser = signal<User | null>(null);
 
-  login(data: LoginRequest) {
-    return this.http.post<ApiResponse<AuthResponse>>(`${this.api}/login`, data);
-  }
+  constructor() {}
 
-  refreshToken(data: RefreshTokenRequest) {
-    return this.http.post<ApiResponse<AuthResponse>>(`${this.api}/refresh-token`, data);
-  }
-
-  storeAuth(response: AuthResponse) {
-    localStorage.setItem('accessToken', response.accessToken);
-    if (response.refreshToken) {
-      localStorage.setItem('refreshToken', response.refreshToken);
-    }
-
+  private setSession(auth: AuthResponse) {
+    this.accessToken = auth.accessToken;
     this.currentUser.set({
-      id: response.userId,
-      email: '',
-      fullName: response.fullName,
-      role: response.role
+      id: auth.userId,
+      fullName: auth.fullName,
+      role: auth.role
     });
-
   }
 
-  getAccessToken(): string | null {
-    return localStorage.getItem('accessToken');
+  clearSession() {
+    this.accessToken = null;
+    this.currentUser.set(null);
   }
 
-  getRefreshToken(): string | null {
-    return localStorage.getItem('refreshToken');
-  }
-
-  isLoggedIn(): boolean {
-    return !!this.getAccessToken();
-  }
-
-  loadCurrentUser() {
-    return this.getCurrentUser().pipe(
-      map(res => res.data),
-      tap(user => this.currentUser.set(user))
+  login(request: LoginRequest) {
+    return this.http.post<ApiResponse<AuthResponse>>(`${this.api}/login`, request, { withCredentials: true }).pipe(
+      tap(res => {
+        if (!res.isSuccess) return;
+        this.setSession(res.data);
+      })
     );
   }
 
-  getCurrentUser() {
-    return this.http.get<ApiResponse<User>>(`${this.api}/me`);
+  getAccessToken() {
+    return this.accessToken;
   }
 
   logout() {
-
-    this.http.post(`${this.api}/logout`, {}).subscribe({
-      error: () => {}
-    });
-
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-
-    this.currentUser.set(null);
-
-    this.router.navigate(['/login']);
-
+    return this.http
+      .post(`${this.api}/logout`, {}, { withCredentials: true })
+      .pipe(
+        catchError((error) => of(null)),
+        finalize(() => {
+          this.clearSession();
+          this.router.navigate(['/login']);
+        })
+      );
   }
 
+  refreshToken() {
+    return this.http.post<ApiResponse<AuthResponse>>(
+      `${this.api}/refresh-token`,
+      {},
+      { withCredentials: true }
+    ).pipe(
+      tap(res => {
+        if (!res.isSuccess) return;
+        this.setSession(res.data);
+      })
+    );
+  }
+
+  isAuthenticated() {
+    return this.currentUser() !== null;
+  }
 }

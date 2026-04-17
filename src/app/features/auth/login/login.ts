@@ -45,8 +45,6 @@ export class Login {
 
         this.loading = false;
 
-        this.authService.storeAuth(res.data);
-
         this.snackbar.success('Login successful');
 
         const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';

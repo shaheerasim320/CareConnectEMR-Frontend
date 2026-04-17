@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Auth } from './core/services/auth';
 
@@ -8,21 +8,7 @@ import { Auth } from './core/services/auth';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App implements OnInit {
+export class App {
   protected readonly title = signal('care-connect-emr');
-  private readonly authService = inject(Auth);
-
-  ngOnInit() {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      this.authService.loadCurrentUser().subscribe({
-        error: (err) => {
-          if (err.status === 401) {
-            this.authService.logout();
-          }
-        }
-      });
-    }
-  }
-
+  protected readonly auth = inject(Auth);
 }

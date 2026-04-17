@@ -1,0 +1,47 @@
+:host {
+    --sidebar-width: 250px;
+    --transition: all 0.3s ease-in-out;
+    white-space: nowrap;
+    overflow-x: hidden;
+}
+
+.layout-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    &.sidebar-collapsed {
+        --sidebar-width: 90px;
+    }
+
+    app-sidebar {
+        width: var(--sidebar-width);
+        transition: var(--transition);
+        height: calc(100vh - 66px);
+        overflow: hidden;
+        z-index: 1000;
+        display: block;
+        border-right: 1px solid #dee2e6;
+    }
+
+    @media (max-width: 991px) {
+        app-sidebar {
+            position: fixed;
+            left: calc(-1 * var(--sidebar-width));
+            top: 66px;
+            background: white;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        &.mobile-sidebar-open app-sidebar {
+            left: 0;
+        }
+
+        .sidebar-backdrop {
+            position: fixed;
+            inset: 66px 0 0 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    }
+}
