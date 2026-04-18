@@ -9,7 +9,7 @@ export interface StatCard {
 
 export interface AppointmentBreakdown {
     scheduled: number;
-    confimed: number; // Note: Mirroring your C# typo 'Confimed' for consistency
+    confirmed: number; 
     checkedIn: number;
     completed: number;
     cancelled: number;
