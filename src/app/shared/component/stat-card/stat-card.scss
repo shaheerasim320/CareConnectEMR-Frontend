@@ -1,0 +1,44 @@
+.stat-card {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    --theme-color: #a8d2f4;
+    transition: transform 0.2s ease;
+    width: 100%;
+    max-width: 300px;
+
+    .deco-blob {
+        background: var(--theme-color);
+        width: 80px;
+        height: 80px;
+        border-bottom-left-radius: 10px;
+    }
+
+    .icon-box {
+        width: 45px;
+        height: 45px;
+        background-color: var(--theme-color);
+        color: hsl(from var(--theme-color) h s 40%);
+    }
+
+    .trend-badge {
+        padding: 2px 8px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        height: 20px;
+
+        &.trend-up {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        &.trend-down {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        &.trend-neutral {
+            background-color: #f5f5f5;
+            color: #757575;
+        }
+    }
+}

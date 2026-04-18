@@ -1,0 +1,36 @@
+.skeleton-pulse {
+  background: #eee;
+  background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+  background-size: 200% 100%;
+  animation: 1.5s shine linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+.skeleton-card {
+  pointer-events: none;
+  
+  .deco-blob {
+    background-color: #f8f9fa !important;
+  }
+
+  .icon-placeholder {
+    width: 45px;
+    height: 45px;
+  }
+
+  .skeleton-line {
+    height: 14px;
+    border-radius: 4px;
+  }
+
+  .skeleton-badge {
+    width: 50px;
+    height: 20px;
+    border-radius: 20px;
+  }
+}

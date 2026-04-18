@@ -1,0 +1,135 @@
+<div class="dashboard container-fluid">
+    <h4 class="fw-bold mb-0">Clinical Dashboard</h4>
+    <p class="mb-3 text text-muted">Monitor key clinical metrics and performance indicators</p>
+
+
+    <div class="row g-4 justify-content-center">
+        @if (dashboardService.isLoading()) {
+        @for (i of [1,2,3,4]; track i) {
+        <div class="col-12 col-md-6 col-lg-3 justify-content-center">
+            <app-stat-card-skeleton />
+        </div>
+        }
+        } @else {
+        @for (stat of statsArray(); track stat.label) {
+        <div class="col-12 col-md-6 col-lg-3 justify-content-center">
+            <app-stat-card [label]="stat.label" value="stat.count" [icon]="stat.icon" [trend]="stat.trend"
+                [trendDirection]="stat.trendDirection" [theme]="stat.theme" />
+        </div>
+        }
+        }
+    </div>
+
+    <div class="row g-4 mt-2">
+        <div class="col-12 col-lg-8">
+            <div class="widget-card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0">Appointment Breakdown</h5>
+                    <span class="badge bg-light text-dark border">Today</span>
+                </div>
+                <div class="p-4">
+                    <div class="row g-3">
+                        <div class="col-6 col-md-4">
+                            <div class="p-3 border rounded-3 bg-light">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <span class="status-dot bg-primary"></span>
+                                    <small class="text-muted">Scheduled</small>
+                                </div>
+                                <h4 class="fw-bold mb-0">{{ breakdown()?.scheduled ?? 0 }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="p-3 border rounded-3 bg-light">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <span class="status-dot bg-success"></span>
+                                    <small class="text-muted">Completed</small>
+                                </div>
+                                <h4 class="fw-bold mb-0">{{ breakdown()?.completed ?? 0 }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="p-3 border rounded-3 bg-light">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <span class="status-dot bg-danger"></span>
+                                    <small class="text-muted">Cancelled</small>
+                                </div>
+                                <h4 class="fw-bold mb-0">{{ breakdown()?.cancelled ?? 0 }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-4"><small class="text-muted">Confirmed:</small> <strong>{{breakdown()?.confimed}}</strong>
+                        </div>
+                        <div class="col-4"><small class="text-muted">Checked In:</small>
+                            <strong>{{breakdown()?.checkedIn}}</strong></div>
+                        <div class="col-4"><small class="text-muted">No Show:</small> <strong>{{breakdown()?.noShow}}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="widget-card shadow-sm">
+                <div class="card-header">
+                    <h5 class="fw-bold mb-0">Top Doctors Today</h5>
+                </div>
+                <div class="p-3">
+                    @for (doc of dashboardService.adminData()?.topDoctorsToday; track doc.doctorId) {
+                    <div
+                        class="d-flex align-items-center justify-content-between py-2 border-bottom last-child-border-0">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="avatar-initials">{{ doc.doctorName | slice:0:1 }}</div>
+                            <div>
+                                <div class="fw-bold small">{{ doc.doctorName }}</div>
+                                <div class="text-muted" style="font-size: 11px;">Load: {{ doc.appointmentCount }} appts
+                                </div>
+                            </div>
+                        </div>
+                        <span class="badge bg-soft-green px-2 py-1">{{ doc.completedCount }} Done</span>
+                    </div>
+                    } @empty {
+                    <p class="text-center text-muted py-5">No active doctors today.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mt-2">
+        <div class="col-12">
+            <div class="widget-card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0">Recent Registrations</h5>
+                    <button class="btn btn-sm btn-outline-primary">View All</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr class="small text-muted">
+                                <th class="ps-4">PATIENT NAME</th>
+                                <th>MRN</th>
+                                <th>GENDER</th>
+                                <th class="pe-4 text-end">REGISTERED AT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (p of dashboardService.adminData()?.recentRegistrations; track p.id) {
+                            <tr>
+                                <td class="ps-4 fw-bold">{{ p.fullName }}</td>
+                                <td><code class="text-primary">{{ p.mrn }}</code></td>
+                                <td>
+                                    <span class="badge rounded-pill"
+                                        [ngClass]="p.gender === 'Male' ? 'bg-soft-blue' : 'bg-soft-green'">
+                                        {{ p.gender }}
+                                    </span>
+                                </td>
+                                <td class="pe-4 text-end text-muted small">{{ p.registeredAt | date:'shortTime' }}</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,48 @@
+.dashboard {
+
+    .text {
+        font-size: 13px;
+    }
+    
+    .widget-card {
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid #edf2f7;
+        height: 100%;
+
+        .card-header {
+            background: transparent;
+            border-bottom: 1px solid #f1f4f8;
+            padding: 1.25rem 1.5rem;
+        }
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .bg-soft-blue {
+        background-color: #eef4fb;
+        color: #11438f;
+    }
+
+    .bg-soft-green {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .avatar-initials {
+        width: 40px;
+        height: 40px;
+        background: #eef4fb;
+        color: #11438F;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+}

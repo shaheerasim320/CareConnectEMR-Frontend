@@ -1,0 +1,29 @@
+<div class="stat-card border p-4 rounded-3 overflow-hidden position-relative bg-white" [style.--theme-color]="theme()">
+    <div class="deco-blob position-absolute top-0 end-0 z-1"></div>
+    <div class="card-content z-2 position-relative">
+        <div class="icon-box d-flex align-items-center justify-content-center rounded-2 fs-5">
+            <mat-icon>{{ icon() }}</mat-icon>
+        </div>
+
+        <div class="mt-4">
+            <p class="text-muted mb-1 small">{{ label() }}</p>
+            <div class="d-flex align-items-end gap-2 mt-2">
+                <h2 class="fw-bold mb-0">{{ formattedValue() }}</h2>
+                <span class="trend-badge d-inline-flex align-items-center lh-1 gap-1" [ngClass]="{
+                  'trend-up': trendDirection() === 'up',
+                  'trend-down': trendDirection() === 'down',
+                  'trend-neutral': trendDirection() === 'neutral'
+                }">
+                    <mat-icon>
+                        @switch (trendDirection()) {
+                            @case ('up') { trending_up }
+                            @case ('down') { trending_down }
+                            @default { remove } 
+                        }
+                    </mat-icon>
+                    <span>{{ trendDisplay() }}</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

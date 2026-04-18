@@ -1,1 +1,6 @@
-<p>dashboard works!</p>
+@switch (userRole()) {
+@case ('Admin') {<app-admin-dashboard /> }
+@case ('Doctor') { <app-doctor-dashboard /> }
+@case ('Receptionist') { <app-receptionist-dashboard /> }
+@default { <div class="p-5 text-center">Unauthorized Access</div> }
+}
