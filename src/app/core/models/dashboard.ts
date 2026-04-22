@@ -1,10 +1,8 @@
-export interface StatCard {
-    label: string;
-    value: string;
-    trend: string;
+export interface DashboardMetric {
+    count: number;
+    previousCount: number;
+    trendPercent: number | null;
     trendDirection: 'up' | 'down' | 'neutral';
-    theme: string;
-    icon: string;
 }
 
 export interface AppointmentBreakdown {
@@ -33,10 +31,10 @@ export interface RecentPatient {
 }
 
 export interface AdminDashboardResponse {
-    totalPatients: StatCard;
-    appointmentsToday: StatCard;
-    completedToday: StatCard;
-    cancellationRate: StatCard;
+    totalPatients: DashboardMetric;
+    appointmentsToday: DashboardMetric;
+    completedToday: DashboardMetric;
+    cancellationRate: DashboardMetric;
     breakdownToday: AppointmentBreakdown;
     topDoctorsToday: DoctorLoad[];
     recentRegistrations: RecentPatient[];

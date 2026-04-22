@@ -1,304 +1,147 @@
-# 🏥 CareConnect EMR
+# CareConnect EMR Frontend
 
+CareConnect EMR is an Angular 20 frontend for a healthcare / EMR system. The current codebase focuses on authentication, protected app layout, and a role-aware dashboard experience connected to a .NET backend API.
 
+## What Is Implemented
 
-CareConnect EMR is a modern **Healthcare / Electronic Medical Records (EMR)** frontend built with **Angular 20**, Angular Material, and a scalable enterprise-grade architecture.  
+- Angular 20 standalone application bootstrapped with `bootstrapApplication`
+- Route-based app shell with protected and guest-only navigation
+- JWT-based authentication with access token handling on the client
+- Refresh-token session restore during app startup using `APP_INITIALIZER`
+- HTTP interceptor that attaches bearer tokens and retries requests after token refresh on `401`
+- Signal-based client state for auth, layout, and dashboard data
+- Responsive shell layout with header, sidebar, and mobile/desktop sidebar behavior
+- Role-aware navigation filtering for `Admin`, `Doctor`, and `Receptionist`
+- Login screen with reactive forms and validation
+- Dashboard entry that switches UI by logged-in user role
+- Admin dashboard wired to live summary API data
+- Reusable animated stat cards and loading skeleton cards
+- Custom page title strategy
+- Angular Material + Bootstrap based UI foundation
 
-It integrates with a **.NET backend API** for authentication, patient management, appointments, and role-based access control.
+## Current Frontend Scope
 
+### Authentication
 
+- Login request integration with the backend `Auth` endpoints
+- Access token stored in the Angular auth service
+- Refresh token flow executed with `withCredentials`
+- Logout flow that clears client session and redirects to `/login`
+- Guest guard to keep authenticated users out of the login page
+- Auth guard to protect private routes
 
----
+### App Bootstrap
 
+- `APP_INITIALIZER` attempts a refresh-token call before the app fully loads
+- Startup refresh is wrapped with timeout and fallback handling to avoid hanging the UI
+- Global HTTP client is configured with the auth interceptor
+- Document titles are updated automatically through a custom `TitleStrategy`
 
+### Layout And Navigation
 
-## 🚀 Tech Stack
+- Shared shell layout for authenticated pages
+- Header with user info and logout action
+- Sidebar with navigation filtered by current user role
+- Layout service backed by signals for desktop collapse and mobile open state
 
+### Dashboard
 
+- Lazy-loaded dashboard route behind authentication
+- Dashboard host component chooses a dashboard view by current user role
+- Admin dashboard currently includes:
+- Summary stat cards
+- Appointment breakdown section
+- Top doctors list
+- Recent patient registrations table
+- Loading skeletons while dashboard summary data is being fetched
+- Doctor and receptionist dashboard components are scaffolded and ready for expansion
 
-- Angular 20 (Standalone Architecture)
+### Shared UI
 
-- Angular Material UI
+- Reusable `app-stat-card` component with animated numeric display
+- Reusable `app-stat-card-skeleton` component for loading states
+- Snackbar service wrapper for notifications
 
+## Recent Frontend Work
+
+- Fixed the admin dashboard stat cards so they correctly map backend summary fields like `count` and `trendPercent`
+- Corrected the stat-card binding issue where the template was passing `"stat.count"` as plain text instead of a bound value
+- Updated dashboard models to match the actual API response shape
+- Verified the frontend build after the dashboard fix
+
+## Tech Stack
+
+- Angular 20
+- TypeScript
+- Angular Material
+- Bootstrap 5
 - RxJS
-
-- Signals (Reactive State Management)
-
-- SCSS (Custom Theming)
-
-- JWT Authentication (Access + Refresh Tokens)
-
-- .NET Web API Backend
-
-- Role-Based Access Control (RBAC)
-
-
-
----
-
-
-
-## 📁 Project Architecture
-
-src/app/
-
-│
-
-├── core/
-
-│ ├── services/ # Auth, API services
-
-│ ├── guards/ # AuthGuard, GuestGuard
-
-│ ├── interceptors/ # JWT + Error handling
-
-│ ├── models/ # Interfaces / DTOs
-
-│
-
-├── features/
-
-│ ├── auth/ # Login module
-
-│ ├── dashboard/ # Main dashboard
-
-│ ├── patients/ # Patient management
-
-│ ├── appointments/ # Appointment system
-
-│ ├── users/ # Admin user management
-
-│
-
-├── layout/
-
-│ ├── shell/ # Main app layout
-
-│ ├── sidebar/
-
-│ └── header/
-
-│
-
-├── shared/
-
-│ ├── components/ # Reusable UI components
-
-│ └── pipes/ # Utility pipes
-
-
-
----
-
-
-
-## ⚙️ Features
-
-
-
-### 🔐 Authentication
-
-- JWT Login (Access + Refresh Token)
-
-- Auto token refresh (silent login)
-
-- Secure HTTP-only API integration
-
-- Guest Guard (prevents logged-in users from seeing login page)
-
-
-
-### 🛡️ Route Protection
-
-- Auth Guard (protects private routes)
-
-- Role-based access ready (Admin, Doctor, Nurse, Staff)
-
-
-
-### 🧠 State Management
-
-- Angular Signals for reactive user state
-
-- Centralized Auth Service
-
-
-
-### 💉 Healthcare Modules
-
-- Patient Management
-
-- Appointment Scheduling
-
-- User Administration (RBAC ready)
-
-
-
----
-
-
-
-## 🧪 Development Server
-
-
-
-Run local development server:
-
-
+- Angular Signals
+- SCSS
+
+## Project Structure
+
+```text
+src/app
+|-- core
+|   |-- guards
+|   |-- interceptors
+|   |-- models
+|   |-- navigation
+|   |-- services
+|   `-- strategies
+|-- features
+|   |-- auth
+|   `-- dashboard
+|-- layout
+|   |-- header
+|   |-- shell
+|   `-- sidebar
+`-- shared
+    `-- component
+```
+
+## Routes Available Right Now
+
+- `/login`
+- `/dashboard`
+
+## Backend Integration In Use
+
+The frontend is already integrated around these backend auth/dashboard flows:
+
+- `POST /Auth/login`
+- `POST /Auth/logout`
+- `POST /Auth/refresh-token`
+- `GET /Dashboard/summary`
+
+The app expects the API base URL from the Angular environment configuration.
+
+## Scripts
 
 ```bash
-ng serve
+npm install
+npm start
+npm run build
+npm test
 ```
 
-Navigate to:
+## Development Notes
 
+- The project uses standalone components instead of NgModules
+- Dependency injection follows modern Angular style with `inject()`
+- Signals are used for lightweight reactive state
+- Guards and interceptors are implemented as functional APIs
+- Some navigation items such as patients, appointments, and users are prepared in the sidebar config, but their feature routes/pages are not fully implemented yet in this frontend
 
+## Build Status
 
-http://localhost:4200/
+- Production build is passing
+- There is currently a bundle-size warning during build, but it does not block compilation
 
-The app auto reloads on file changes.
-
-## 🧱 Code Generation
-
-Generate Angular artifacts:
-
-
-```
-ng generate component component-name
-
-ng generate service service-name
-
-ng generate guard guard-name
-```
-
-## 📦 Build Project
-
-Production build:
-
-
-```
-ng build
-```
-Output:
-```
-dist/
-```
-
-Optimized for performance and deployment.
-
-## 🧪 Testing
-
-Unit Tests
-
-```
-ng test
-```
-
-E2E Tests
-```
-ng e2e
-```
-
-## 🔐 Authentication Flow
-
-Access Token
-   ↓
-Stored in memory (Angular service)
-
-Refresh Token
-   ↓
-Stored in HttpOnly Cookie
-
-Interceptor
-   ↓
-Adds Authorization header
-
-401
-   ↓
-refresh-token endpoint
-   ↓
-retry request
-
-## 🧠 Key Architecture Patterns
-
-- Standalone Components
-
-- Functional Guards (CanActivateFn)
-
-- Functional Interceptors (HttpInterceptorFn)
-
-- Reactive Forms
-
-- Signal-based State Management
-
-## 🌐 Backend Integration
-
-This frontend connects to a .NET Web API:
-
-
-
-Auth Endpoints
-```
-POST /api/Auth/login
-
-POST /api/Auth/refresh-token
-
-POST /api/Auth/logout
-
-GET  /api/Auth/me
-```
-
-## 👥 Roles (RBAC Ready)
-
-Admin
-
-Doctor
-
-Receptionist
-
-
-
-## 📌 Future Enhancements
-
-- Real-time notifications
-
-- Audit logs
-
-- Advanced patient analytics
-
-- File upload system (medical reports)
-
-- WebSocket support for live updates
-## 👨‍💻 Developer Notes
-
-- Use inject() instead of constructors (modern Angular style)
-
-- Keep services in core/
-
-- Use interceptors for API concerns
-
-- Keep UI logic inside features/
-
-## 🏥 Project Goal
-
-To build a scalable, production-grade EMR system similar to modern hospital systems with:
-
-
-
-- Secure authentication
-
-- Role-based workflows
-
-- Clean UI/UX using Angular Material
-
-- Maintainable architecture for long-term scaling
-
-## 📄 License
-
-This project is for educational and professional development purposes.
-
-## 👨‍💻 Author
+## Author
 
 **Shaheer Asim**  
-Software Engineer — .NET · Angular · SQL Server  
-[GitHub](https://github.com/shaheerasim320) · [LinkedIn](https://linkedin.com/in/shaheer-asim-4b08a2367)
+Software Engineer  
+[GitHub](https://github.com/shaheerasim320)  
+[LinkedIn](https://linkedin.com/in/shaheer-asim-4b08a2367)

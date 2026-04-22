@@ -13,7 +13,7 @@
         } @else {
         @for (stat of statsArray(); track stat.label) {
         <div class="col-12 col-md-6 col-lg-3 justify-content-center">
-            <app-stat-card [label]="stat.label" value="stat.count" [icon]="stat.icon" [trend]="stat.trend"
+            <app-stat-card [label]="stat.label" [value]="stat.value" [icon]="stat.icon" [trend]="stat.trend"
                 [trendDirection]="stat.trendDirection" [theme]="stat.theme" />
         </div>
         }

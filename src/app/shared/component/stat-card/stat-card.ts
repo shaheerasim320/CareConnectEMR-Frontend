@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, computed, input, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, input, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 
@@ -9,20 +9,22 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './stat-card.html',
   styleUrl: './stat-card.scss',
 })
-export class StatCard implements OnInit {
+export class StatCard{
 
   label = input.required<string>();
-  value = input.required<string>();
+  value = input.required<string | number>();
   icon = input.required<string>();
-  trend = input.required<string>();
+  trend = input.required<string | number>();
   trendDirection = input.required<'up' | 'down' | 'neutral'>();
   theme = input.required<string>();
 
   displayValue = signal(0);
   displayTrend = signal(0);
 
-  ngOnInit(): void {
-    this.animate();
+  constructor() {
+    effect(() => {
+      this.animate();
+    });
   }
 
   trendDisplay = computed(() => {
