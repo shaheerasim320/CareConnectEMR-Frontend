@@ -17,6 +17,7 @@
     app-sidebar {
         width: var(--sidebar-width);
         transition: var(--transition);
+        padding-top: 66px;
         height: calc(100vh - 66px);
         overflow: hidden;
         z-index: 1000;
@@ -27,8 +28,11 @@
     @media (max-width: 991px) {
         app-sidebar {
             position: fixed;
-            left: calc(-1 * var(--sidebar-width));
             top: 66px;
+            padding-top: 0;
+            left: calc(-1 * var(--sidebar-width));
+            height: calc(100% - 66px);
+            z-index: 1100;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
             background-color: white;
         }
@@ -39,7 +43,7 @@
 
         .sidebar-backdrop {
             position: fixed;
-            inset: 66px 0 0 0;
+            inset: 0;
             background: rgba(0, 0, 0, 0.5);
             z-index: 999;
         }

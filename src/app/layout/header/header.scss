@@ -1,8 +1,11 @@
 .header {
-    position: sticky;
+    position: fixed;
     top: 0;
     z-index: 10;
     height: 66px;
+    width: 100%;
+    z-index: 1060;
+    background-color: white;
 
     .toggle-icon{
         cursor: pointer;
