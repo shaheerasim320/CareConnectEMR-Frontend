@@ -30,6 +30,7 @@
             left: calc(-1 * var(--sidebar-width));
             top: 66px;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            background-color: white;
         }
 
         &.mobile-sidebar-open app-sidebar {
