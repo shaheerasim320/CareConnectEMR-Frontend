@@ -1,0 +1,47 @@
+.skeleton-card {
+  height: 310px;
+  background: white;
+  overflow: hidden;
+  border-radius: 16px;
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  .skeleton-icon, .skeleton-text, .skeleton-donut, .skeleton-legend {
+    background: #f0f2f5;
+    background: linear-gradient(90deg, #f0f2f5 25%, #e0e4e8 50%, #f0f2f5 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+  }
+
+  .skeleton-icon { width: 24px; height: 24px; border-radius: 50%; }
+  .skeleton-text { width: 140px; height: 18px; }
+
+  .skeleton-chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 180px;
+    margin-top: 20px;
+  }
+
+  .skeleton-donut {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    -webkit-mask: radial-gradient(circle, transparent 40%, black 41%);
+    mask: radial-gradient(circle, transparent 40%, black 41%);
+  }
+
+  .skeleton-footer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+  }
+
+  .skeleton-legend { width: 60px; height: 12px; }
+}

@@ -3,7 +3,8 @@
         <a routerLink="/" class="logo me-4">
             <img src="assets/images/logo.png" alt="logo" width="120px">
         </a>
-        <img src="assets/icons/toggle-icon.svg" alt="toggle" class="toggle-icon ms-5 d-none d-lg-block" (click)="onToggleClick()">
+        <img src="assets/icons/toggle-icon.svg" alt="toggle" class="toggle-icon ms-5 d-none d-lg-block"
+            (click)="onToggleClick()">
     </div>
 
     <button class="hamburger d-lg-none" (click)="onToggleClick()">
@@ -11,7 +12,8 @@
     </button>
 
     <div class="position-relative d-none d-lg-flex">
-        <div class="user d-none d-lg-flex gap-3 align-items-center" (click)="toggleProfile()" [class.active]="isProfileOpen">
+        <div class="user d-none d-lg-flex gap-3 align-items-center" (click)="toggleProfile()"
+            [class.active]="isProfileOpen">
             <div class="info d-flex flex-column align-items-end">
                 <span class="text-blue fw-bold">{{user()?.fullName | uppercase}}</span>
                 <span class="text-muted fw-bold">{{user()?.role | uppercase}}</span>
@@ -22,14 +24,20 @@
         </div>
 
         @if (isProfileOpen) {
-            <div class="custom-dropdown shadow-sm border rounded">
-                <button (click)="logout()" class="dropdown-item d-flex align-items-center gap-2">
-                    <mat-icon>logout</mat-icon>
-                    <span>Logout</span>
-                </button>
-            </div>
-            
-            <div class="dropdown-backdrop" (click)="isProfileOpen = false"></div>
+        <div class="custom-dropdown shadow-sm border rounded">
+            <button (click)="logout()" class="dropdown-item d-flex align-items-center gap-2"
+                [disabled]="authService.isLoggingOut()">
+                @if (authService.isLoggingOut()) {
+                <div class="spinner-border spinner-border-sm me-2"></div>
+                <span>Logging out...</span>
+                } @else {
+                <mat-icon>logout</mat-icon>
+                <span>Logout</span>
+                }
+            </button>
+        </div>
+
+        <div class="dropdown-backdrop" (click)="isProfileOpen = false"></div>
         }
     </div>
 

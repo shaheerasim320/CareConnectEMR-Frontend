@@ -9,6 +9,6 @@ import { Auth } from './core/services/auth';
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('care-connect-emr');
+  protected readonly title = signal('CareConnectEMR');
   protected readonly auth = inject(Auth);
 }

@@ -1,0 +1,82 @@
+<div class="widget-card shadow-sm">
+  <div class="card-header d-flex gap-2 align-items-center">
+    <mat-icon class="text-blue">medical_services</mat-icon>
+    <h6 class="fw-bold mb-0 text-blue">Top Doctors Today</h6>
+  </div>
+
+  <div class="table-container d-none d-md-block">
+    @if (doctors().length === 0) {
+    <div class="empty-state-container d-flex flex-column align-items-center justify-content-center py-5">
+      <mat-icon class="text-muted opacity-25"
+        style="font-size: 48px; width: 48px; height: 48px;">person_search</mat-icon>
+      <p class="text-muted mt-2 small">No appointments assigned to doctors yet today.</p>
+    </div>
+    } @else {
+    <table mat-table [dataSource]="doctors()">
+      <ng-container matColumnDef="doctor">
+        <th mat-header-cell *matHeaderCellDef>Doctor Name</th>
+        <td mat-cell *matCellDef="let doc">
+          <div class="d-flex align-items-center py-2">
+            <div class="avatar-initials">{{ getInitials(doc.doctorName) }}</div>
+            <span class="ms-3 small">{{ doc.doctorName }}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="load">
+        <th mat-header-cell *matHeaderCellDef>Load</th>
+        <td mat-cell *matCellDef="let doc">{{ doc.appointmentCount }} appts</td>
+      </ng-container>
+
+      <ng-container matColumnDef="progress">
+        <th mat-header-cell *matHeaderCellDef>Progress</th>
+        <td mat-cell *matCellDef="let doc">
+          @let calcProgress = (doc.appointmentCount > 0 ? (doc.completedCount / doc.appointmentCount) * 100 : 0);
+          <div class="progress-track">
+            <div class="progress-fill" [style.width.%]="calcProgress" [class.bg-teal]="calcProgress < 100"
+              [class.bg-blue]="calcProgress === 100">
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    }
+  </div>
+
+  <div class="mobile-cards-container d-md-none p-3">
+    @if (doctors().length === 0) {
+    <div class="empty-state-container d-flex flex-column align-items-center justify-content-center py-5">
+      <mat-icon class="text-muted opacity-25"
+        style="font-size: 48px; width: 48px; height: 48px;">person_search</mat-icon>
+      <p class="text-muted mt-2 small text-center">No appointments assigned to doctors yet today.</p>
+    </div>
+    } @else {
+    @for (doc of doctors(); track doc.doctorId) {
+    @let mobileProgress = (doc.appointmentCount > 0 ? (doc.completedCount / doc.appointmentCount) * 100 : 0);
+
+    <div class="doctor-mobile-card mb-3 p-3">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center">
+          <div class="avatar-initials">{{ getInitials(doc.doctorName) }}</div>
+          <div class="ms-2 fw-bold">{{ doc.doctorName }}</div>
+        </div>
+        <span class="load-badge">{{ doc.appointmentCount }} Appts</span>
+      </div>
+
+      <div class="progress-label d-flex justify-content-between small text-muted mb-1">
+        <span>Progress</span>
+        <span>{{ mobileProgress | number:'1.0-0' }}%</span>
+      </div>
+      <div class="progress-track w-100">
+        <div class="progress-fill" [style.width.%]="mobileProgress" [class.bg-teal]="mobileProgress < 100"
+          [class.bg-blue]="mobileProgress === 100">
+        </div>
+      </div>
+    </div>
+    }
+    }
+  </div>
+</div>

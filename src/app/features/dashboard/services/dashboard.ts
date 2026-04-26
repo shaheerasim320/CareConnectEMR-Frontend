@@ -3,7 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 
 import { tap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { AdminDashboardResponse } from '../../../core/models/dashboard';
+import { AdminDashboardResponse } from '../../../core/models/dashboard/dashboard-response';
 import { ApiResponse } from '../../../core/models/api-response';
 
 @Injectable({

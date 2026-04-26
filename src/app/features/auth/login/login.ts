@@ -41,11 +41,9 @@ export class Login {
     const data = this.loginForm.getRawValue();
 
     this.authService.login(data).subscribe({
-      next: (res) => {
+      next: () => {
 
         this.loading = false;
-
-        this.snackbar.success('Login successful');
 
         const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';
 

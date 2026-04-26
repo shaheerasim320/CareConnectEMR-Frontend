@@ -1,0 +1,57 @@
+.widget-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #edf2f7;
+    height: 100%;
+
+    .card-header {
+        background: transparent;
+        border-bottom: 1px solid #f1f4f8;
+        padding: 1.25rem 1.5rem;
+
+    }
+
+    .text-blue {
+        color: #11438F;
+    }
+
+    .btn:hover{
+        background-color: #f0f4f8 !important;
+    }
+
+    table {
+        width: 100%;
+        background: transparent;
+
+        .mat-mdc-header-cell {
+            color: #718096;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            padding: 1rem 0.5rem;
+            border-bottom: 1px solid #f1f4f8;
+        }
+
+        .mat-mdc-cell {
+            padding: 1rem 0.5rem;
+            border-bottom: 1px solid #f8fafc;
+        }
+
+        .mat-mdc-row:last-child .mat-mdc-cell {
+            border-bottom: none;
+        }
+    }
+
+    .avatar-initials {
+        width: 34px;
+        height: 34px;
+        background: #f0f4f8;
+        color: #11438F;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        font-size: 11px;
+        font-weight: 500;
+    }
+}

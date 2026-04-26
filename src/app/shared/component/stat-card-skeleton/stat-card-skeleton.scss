@@ -1,36 +1,42 @@
-.skeleton-pulse {
-  background: #eee;
-  background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
-  background-size: 200% 100%;
-  animation: 1.5s shine linear infinite;
+@keyframes shimmer {
+    0% { background-position: -468px 0; }
+    100% { background-position: 468px 0; }
 }
 
-@keyframes shine {
-  to {
-    background-position-x: -200%;
-  }
+.skeleton-shimmer {
+    background: #f6f7f8;
+    background-image: linear-gradient(
+        to right, 
+        #f6f7f8 0%, 
+        #edeef1 20%, 
+        #f6f7f8 40%, 
+        #f6f7f8 100%
+    );
+    background-repeat: no-repeat;
+    background-size: 800px 100%;
+    animation: shimmer 1.2s linear infinite forwards;
 }
 
-.skeleton-card {
-  pointer-events: none;
-  
-  .deco-blob {
-    background-color: #f8f9fa !important;
-  }
+.stat-card.skeleton {
+    pointer-events: none;
 
-  .icon-placeholder {
-    width: 45px;
-    height: 45px;
-  }
+    .deco-blob { opacity: 0.1; }
 
-  .skeleton-line {
-    height: 14px;
-    border-radius: 4px;
-  }
+    .icon-box {
+        background-color: #f0f0f0 !important;
+        border: none;
+    }
 
-  .skeleton-badge {
-    width: 50px;
-    height: 20px;
-    border-radius: 20px;
-  }
+    .skeleton-line {
+        height: 12px;
+        border-radius: 4px;
+    }
+
+    .skeleton-value {
+        border-radius: 4px;
+    }
+
+    .skeleton-badge {
+        background-color: #f0f0f0;
+    }
 }

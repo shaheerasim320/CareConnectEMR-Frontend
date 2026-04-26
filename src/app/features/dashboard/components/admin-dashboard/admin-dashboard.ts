@@ -1,31 +1,41 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { Dashboard } from '../../services/dashboard';
 import { StatCard } from '../../../../shared/component/stat-card/stat-card';
 import { StatCardSkeleton } from '../../../../shared/component/stat-card-skeleton/stat-card-skeleton';
 import { CommonModule } from '@angular/common';
-import { DashboardMetric } from '../../../../core/models/dashboard';
+import { StatCard as DashboardStatCard } from '../../../../core/models/dashboard/stat-card';
+import { StatCardUI } from '../../../../shared/models/stat-card-ui';
+import { MatIconModule } from '@angular/material/icon';
+import { AppointmentBreakdown } from './components/appointment-breakdown/appointment-breakdown';
+import { AppointmentBreakdownSkeleton } from './components/appointment-breakdown-skeleton/appointment-breakdown-skeleton';
+import { TopDoctors } from './components/top-doctors/top-doctors';
+import { TopDoctorsSkeleton } from './components/top-doctors-skeleton/top-doctors-skeleton';
+import { RecentRegistrations } from './components/recent-registrations/recent-registrations';
+import { RecentRegistrationsSkeleton } from './components/recent-registrations-skeleton/recent-registrations-skeleton';
 
 @Component({
   selector: 'app-admin-dashboard',
-  imports: [StatCard, StatCardSkeleton, CommonModule],
+  imports: [StatCard, StatCardSkeleton, CommonModule, MatIconModule, AppointmentBreakdown, AppointmentBreakdownSkeleton, TopDoctors, TopDoctorsSkeleton, RecentRegistrations, RecentRegistrationsSkeleton],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.scss',
 })
-export class AdminDashboard implements OnInit {
+export class AdminDashboard {
   dashboardService = inject(Dashboard);
 
-  private toStatCard(metric: DashboardMetric, label: string, theme: string, icon: string) {
+  private toStatCard(metric: DashboardStatCard, label: string, theme: string, icon: string):StatCardUI {
     return {
       label,
-      value: metric.count,
-      trend: Math.abs(metric.trendPercent ?? 0),
-      trendDirection: metric.trendDirection,
       theme,
-      icon
+      icon,
+      count: metric.count,
+      trendValue: metric.trendValue ?? null,
+      trendType: metric.trendType ?? null,
+      trendDirection: metric.trendDirection ?? null,
+      trendComparison: metric.trendComparison
     };
   }
 
-  statsArray = computed(() => {
+  statsArray = computed<StatCardUI[]>(() => {
     const data = this.dashboardService.adminData();
     if (!data) return [];
 
@@ -39,8 +49,10 @@ export class AdminDashboard implements OnInit {
 
   breakdown = computed(() => this.dashboardService.adminData()?.breakdownToday);
 
-  ngOnInit() {
-    this.dashboardService.getAdminDashboard().subscribe();
+  constructor() {
+    effect(() => {
+      this.dashboardService.getAdminDashboard().subscribe();
+    });
   }
 
 }

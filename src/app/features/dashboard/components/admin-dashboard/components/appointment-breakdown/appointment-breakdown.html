@@ -1,0 +1,16 @@
+<div class="widget-card shadow-sm">
+    <div class="card-header d-flex gap-2 align-items-center text-blue">
+        <mat-icon>pie_chart_outline</mat-icon>
+        <h6 class="fw-bold mb-0">Appointment Breakdown</h6>
+    </div>
+    <apx-chart
+    [series]="chartOptions().series"
+    [chart]="chartOptions().chart"
+    [labels]="chartOptions().labels"
+    [colors]="chartOptions().colors"
+    [plotOptions]="chartOptions().plotOptions"
+    [dataLabels]="chartOptions().dataLabels"
+    [legend]="chartOptions().legend"
+    [tooltip]="chartOptions().tooltip" class="d-flex justify-content-center p-3">
+    </apx-chart>
+</div>

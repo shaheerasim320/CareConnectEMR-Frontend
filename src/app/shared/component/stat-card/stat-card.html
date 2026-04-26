@@ -9,20 +9,38 @@
             <p class="text-muted mb-1 small">{{ label() }}</p>
             <div class="d-flex align-items-end gap-2 mt-2">
                 <h2 class="fw-bold mb-0">{{ formattedValue() }}</h2>
+                @if(hasTrend()){
                 <span class="trend-badge d-inline-flex align-items-center lh-1 gap-1" [ngClass]="{
-                  'trend-up': trendDirection() === 'up',
-                  'trend-down': trendDirection() === 'down',
-                  'trend-neutral': trendDirection() === 'neutral'
-                }">
+                      'trend-up': trendDirection() === 'Up',
+                      'trend-down': trendDirection() === 'Down',
+                      'trend-neutral': trendDirection() === 'Neutral'
+                    }">
                     <mat-icon>
                         @switch (trendDirection()) {
-                            @case ('up') { trending_up }
-                            @case ('down') { trending_down }
-                            @default { remove } 
+                        @case ('Up') { trending_up }
+                        @case ('Down') { trending_down }
+                        @case ('Neutral') { remove }
                         }
                     </mat-icon>
                     <span>{{ trendDisplay() }}</span>
                 </span>
+                }
+                @if (trendValue() == null && label() === 'Total Patients') {
+                <span class="trend-badge d-inline-flex align-items-center new-badge">
+                    NEW
+                </span>
+                }
+
+                @if (comparison() === 'Live') {
+                <span class="trend-badge d-inline-flex align-items-center gap-1 live-badge">
+                    <span class="pulse-dot"></span>
+                    LIVE
+                </span>
+                }
+
+                @if (comparisonText() && comparison() !== 'Live'){
+                <span class="comparision-text">{{comparisonText()}}</span>
+                }
             </div>
         </div>
     </div>

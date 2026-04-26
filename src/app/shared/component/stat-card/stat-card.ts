@@ -9,13 +9,15 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './stat-card.html',
   styleUrl: './stat-card.scss',
 })
-export class StatCard{
-
+export class StatCard {
   label = input.required<string>();
-  value = input.required<string | number>();
+  value = input.required<number>();
   icon = input.required<string>();
-  trend = input.required<string | number>();
-  trendDirection = input.required<'up' | 'down' | 'neutral'>();
+
+  trendValue = input<number | null>(null);
+  trendType = input<'Percent' | 'Number' | null>(null);
+  trendDirection = input<'Up' | 'Down' | 'Neutral' | null>(null);
+  comparison = input<'Yesterday' | 'Month' | 'Remaining' | 'Live' | 'Career' | null>(null);
   theme = input.required<string>();
 
   displayValue = signal(0);
@@ -24,19 +26,51 @@ export class StatCard{
   constructor() {
     effect(() => {
       this.animate();
+      console.group(`📊 StatCard: ${this.label()}`);
+      console.table({
+        Label: this.label(),
+        Value: this.value(),
+        Icon: this.icon(),
+        TrendValue: this.trendValue(),
+        TrendType: this.trendType(),
+        TrendDirection: this.trendDirection(),
+        Comparison: this.comparison(),
+        Theme: this.theme(),
+        HasTrend: this.hasTrend()
+      });
+      console.groupEnd();
     });
   }
 
-  trendDisplay = computed(() => {
-    const value = this.displayTrend().toFixed(1);
+  hasTrend = computed(() => this.trendValue() !== null);
 
-    switch (this.trendDirection()) {
-      case 'up':
-        return `+${value}%`;
-      case 'down':
-        return `-${value}%`;
+  trendDisplay = computed(() => {
+    const trend = this.displayTrend();
+
+    if (this.trendType() === 'Percent') {
+      return `${trend.toFixed(1)}%`;
+    }
+
+    if (this.trendType() === 'Number') {
+      return `${trend}`;
+    }
+
+    return '';
+  });
+
+  comparisonText = computed(() => {
+    switch (this.comparison()) {
+      case 'Yesterday':
+        return 'vs yesterday';
+
+      case 'Month':
+        return 'vs last month';
+
+      case 'Remaining':
+        return 'remaining';
+
       default:
-        return `${value}%`;
+        return '';
     }
   });
 
@@ -45,28 +79,26 @@ export class StatCard{
   });
 
   animate() {
-    const rawValue = this.value() ?? '0';
-    const rawTrend = this.trend() ?? '0';
+    const value = this.value() ?? 0;
+    const trend = this.trendValue();
 
-    const cleanValue = Number(rawValue.toString().replace(/,/g, '')) || 0;
-    const cleanTrend = parseFloat(rawTrend.toString().replace(/[^0-9.]/g, '')) || 0;
+    const duration = 1200;
+    const start = performance.now();
 
     const easeOutQuad = (t: number) => t * (2 - t);
-
-    const duration = 1500;
-    const start = performance.now();
 
     const update = (time: number) => {
       const elapsed = time - start;
       const progress = Math.min(elapsed / duration, 1);
-      const easedProgress = easeOutQuad(progress);
+      const eased = easeOutQuad(progress);
 
-      this.displayValue.set(Math.floor(easedProgress * cleanValue));
-      this.displayTrend.set(easedProgress * cleanTrend);
+      this.displayValue.set(Math.floor(eased * value));
 
-      if (progress < 1) {
-        requestAnimationFrame(update);
+      if (trend !== null) {
+        this.displayTrend.set(eased * trend);
       }
+
+      if (progress < 1) requestAnimationFrame(update);
     };
 
     requestAnimationFrame(update);

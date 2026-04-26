@@ -15,7 +15,7 @@ import { Layout } from '../../core/services/layout';
   styleUrl: './header.scss',
 })
 export class Header {
-  private authService = inject(Auth);
+  authService = inject(Auth);
   private layoutService = inject(Layout);
   user = this.authService.currentUser;
   isProfileOpen: boolean = false;

@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './sidebar.scss',
 })
 export class Sidebar {
-  private authService = inject(Auth);
+  authService = inject(Auth);
   layoutService = inject(Layout);
   private navItems = NAV_ITEMS;
   user = this.authService.currentUser;

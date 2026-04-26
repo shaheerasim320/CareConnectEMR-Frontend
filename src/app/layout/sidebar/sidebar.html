@@ -25,9 +25,14 @@
             </div>
         </div>
         
-        <button (click)="logout()" class="btn btn-outline-danger btn-sm w-100 d-flex align-items-center justify-content-center gap-2">
-            <mat-icon>logout</mat-icon>
-            <span>Logout</span>
+        <button (click)="logout()" class="btn btn-outline-danger btn-sm w-100 d-flex align-items-center justify-content-center gap-2" [disabled]="authService.isLoggingOut()">
+            @if (authService.isLoggingOut()) {
+                <div class="spinner-border spinner-border-sm me-2"></div>
+                <span>Logging out...</span>
+                } @else {
+                <mat-icon>logout</mat-icon>
+                <span>Logout</span>
+                }
         </button>
     </div>
 </div>

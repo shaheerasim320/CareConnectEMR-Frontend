@@ -1,0 +1,48 @@
+<div class="widget-card shadow-sm skeleton-wrapper">
+  <div class="card-header d-flex gap-2 align-items-center">
+    <div class="skeleton shimmer icon-placeholder"></div>
+    <div class="skeleton shimmer text-line header-title"></div>
+  </div>
+
+  <div class="table-container d-none d-md-block">
+    <div class="table-skeleton-header">
+      <div class="skeleton shimmer text-line label"></div>
+      <div class="skeleton shimmer text-line label"></div>
+      <div class="skeleton shimmer text-line label"></div>
+    </div>
+    
+    @for (i of [1, 2, 3, 4]; track i) {
+      <div class="table-skeleton-row">
+        <div class="d-flex align-items-center py-2">
+          <div class="skeleton shimmer avatar"></div>
+          <div class="skeleton shimmer text-line ms-3 w-50"></div>
+        </div>
+        <div class="d-flex align-items-center">
+          <div class="skeleton shimmer text-line w-25"></div>
+        </div>
+        <div class="d-flex align-items-center">
+          <div class="skeleton shimmer progress-bar-placeholder"></div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="mobile-cards-container d-md-none p-3">
+    @for (i of [1, 2]; track i) {
+      <div class="doctor-mobile-card mb-3 p-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="d-flex align-items-center">
+            <div class="skeleton shimmer avatar"></div>
+            <div class="skeleton shimmer text-line ms-2" style="width: 80px;"></div>
+          </div>
+          <div class="skeleton shimmer badge-placeholder"></div>
+        </div>
+        <div class="d-flex justify-content-between mb-2">
+            <div class="skeleton shimmer text-line" style="width: 50px;"></div>
+            <div class="skeleton shimmer text-line" style="width: 30px;"></div>
+        </div>
+        <div class="skeleton shimmer progress-bar-mobile"></div>
+      </div>
+    }
+  </div>
+</div>

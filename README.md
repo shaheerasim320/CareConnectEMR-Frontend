@@ -1,85 +1,33 @@
 # CareConnect EMR Frontend
 
-CareConnect EMR is an Angular 20 frontend for a healthcare / EMR system. The current codebase focuses on authentication, protected app layout, and a role-aware dashboard experience connected to a .NET backend API.
+CareConnect EMR is an Angular 20 standalone frontend for a patient portal / EMR-style application. The current frontend centers on authentication, a protected shell layout, and a role-aware dashboard backed by a .NET API.
 
-## What Is Implemented
+## Overview
 
-- Angular 20 standalone application bootstrapped with `bootstrapApplication`
-- Route-based app shell with protected and guest-only navigation
-- JWT-based authentication with access token handling on the client
-- Refresh-token session restore during app startup using `APP_INITIALIZER`
-- HTTP interceptor that attaches bearer tokens and retries requests after token refresh on `401`
-- Signal-based client state for auth, layout, and dashboard data
-- Responsive shell layout with header, sidebar, and mobile/desktop sidebar behavior
-- Role-aware navigation filtering for `Admin`, `Doctor`, and `Receptionist`
-- Login screen with reactive forms and validation
-- Dashboard entry that switches UI by logged-in user role
-- Admin dashboard wired to live summary API data
-- Reusable animated stat cards and loading skeleton cards
-- Custom page title strategy
-- Angular Material + Bootstrap based UI foundation
+This codebase currently provides:
 
-## Current Frontend Scope
-
-### Authentication
-
-- Login request integration with the backend `Auth` endpoints
-- Access token stored in the Angular auth service
-- Refresh token flow executed with `withCredentials`
-- Logout flow that clears client session and redirects to `/login`
-- Guest guard to keep authenticated users out of the login page
-- Auth guard to protect private routes
-
-### App Bootstrap
-
-- `APP_INITIALIZER` attempts a refresh-token call before the app fully loads
-- Startup refresh is wrapped with timeout and fallback handling to avoid hanging the UI
-- Global HTTP client is configured with the auth interceptor
-- Document titles are updated automatically through a custom `TitleStrategy`
-
-### Layout And Navigation
-
-- Shared shell layout for authenticated pages
-- Header with user info and logout action
-- Sidebar with navigation filtered by current user role
-- Layout service backed by signals for desktop collapse and mobile open state
-
-### Dashboard
-
-- Lazy-loaded dashboard route behind authentication
-- Dashboard host component chooses a dashboard view by current user role
-- Admin dashboard currently includes:
-- Summary stat cards
-- Appointment breakdown section
-- Top doctors list
-- Recent patient registrations table
-- Loading skeletons while dashboard summary data is being fetched
-- Doctor and receptionist dashboard components are scaffolded and ready for expansion
-
-### Shared UI
-
-- Reusable `app-stat-card` component with animated numeric display
-- Reusable `app-stat-card-skeleton` component for loading states
-- Snackbar service wrapper for notifications
-
-## Recent Frontend Work
-
-- Fixed the admin dashboard stat cards so they correctly map backend summary fields like `count` and `trendPercent`
-- Corrected the stat-card binding issue where the template was passing `"stat.count"` as plain text instead of a bound value
-- Updated dashboard models to match the actual API response shape
-- Verified the frontend build after the dashboard fix
+- Standalone Angular application bootstrapped with `bootstrapApplication`
+- Login flow against backend auth endpoints
+- Session restore on app startup through refresh token exchange
+- Route guards for authenticated and guest-only pages
+- Protected shell layout with a header and collapsible sidebar
+- Role-filtered sidebar navigation for `Admin`, `Doctor`, and `Receptionist`
+- Dashboard entry route that switches the rendered dashboard by logged-in user role
+- Admin dashboard connected to live summary data from the backend
+- Shared stat cards, loading skeletons, and snackbar notifications
 
 ## Tech Stack
 
 - Angular 20
 - TypeScript
+- Angular Signals
 - Angular Material
 - Bootstrap 5
 - RxJS
-- Angular Signals
+- ApexCharts / `ng-apexcharts`
 - SCSS
 
-## Project Structure
+## App Structure
 
 ```text
 src/app
@@ -98,46 +46,176 @@ src/app
 |   |-- shell
 |   `-- sidebar
 `-- shared
-    `-- component
+    |-- component
+    `-- models
 ```
 
-## Routes Available Right Now
+## Routing
+
+The active routes in the app are:
 
 - `/login`
 - `/dashboard`
 
-## Backend Integration In Use
+Routing behavior:
 
-The frontend is already integrated around these backend auth/dashboard flows:
+- `/` redirects to `/login`
+- `/login` is protected by `guestGuard`
+- `/dashboard` is rendered inside the shared `Shell` and protected by `authGuard`
+- unknown routes redirect back to `/login`
+
+## Authentication Flow
+
+Authentication is handled by [`src/app/core/services/auth.ts`](src/app/core/services/auth.ts).
+
+Current behavior:
+
+- `login()` posts credentials to `POST /Auth/login`
+- successful login stores the access token in memory
+- refresh token values are stored in `localStorage`
+- `APP_INITIALIZER` calls `refreshToken()` during app startup
+- `logout()` posts to `POST /Auth/logout`, clears local session state, and redirects to `/login`
+- authenticated requests receive a bearer token through the HTTP interceptor
+- `401` responses trigger a refresh-token retry flow in the interceptor
+
+Related pieces:
+
+- [`src/app/core/interceptors/auth-interceptor.ts`](src/app/core/interceptors/auth-interceptor.ts)
+- [`src/app/core/guards/auth-guard.ts`](src/app/core/guards/auth-guard.ts)
+- [`src/app/core/guards/guest-guard.ts`](src/app/core/guards/guest-guard.ts)
+- [`src/app/app.config.ts`](src/app/app.config.ts)
+
+## Layout And Navigation
+
+Authenticated pages render inside a shared shell:
+
+- [`src/app/layout/shell`](src/app/layout/shell)
+- [`src/app/layout/header`](src/app/layout/header)
+- [`src/app/layout/sidebar`](src/app/layout/sidebar)
+
+The layout service uses Angular signals to manage:
+
+- desktop sidebar collapsed state
+- mobile sidebar open state
+
+Navigation items are defined in [`src/app/core/navigation/navigation.ts`](src/app/core/navigation/navigation.ts). The sidebar filters them by the current user role before rendering.
+
+Currently configured navigation items:
+
+- Dashboard
+- Patients
+- Appointments
+- Users
+
+Only the dashboard route is implemented today; the other entries are present in navigation but their feature pages are not yet wired in this frontend.
+
+## Dashboard
+
+The dashboard host component chooses which dashboard to display based on `currentUser().role`.
+
+### Admin Dashboard
+
+The admin dashboard is the most complete area of the app. It fetches data from:
+
+- `GET /Dashboard/summary`
+
+The UI currently includes:
+
+- summary stat cards
+- appointment breakdown donut chart
+- top doctors table
+- recent registrations table
+- loading skeletons while data is being fetched
+- CSV download for filtered recent registrations
+
+Key files:
+
+- [`src/app/features/dashboard/services/dashboard.ts`](src/app/features/dashboard/services/dashboard.ts)
+- [`src/app/features/dashboard/components/admin-dashboard`](src/app/features/dashboard/components/admin-dashboard)
+
+### Doctor And Receptionist Dashboards
+
+`DoctorDashboard` and `ReceptionistDashboard` components exist, but they are currently placeholders without live feature logic.
+
+## Environment Configuration
+
+Environment files live in [`src/environments`](src/environments).
+
+Current values in the repo:
+
+- development API URL: `https://localhost:7024/api`
+- production API URL: `http://careconnectemr-backend.runasp.net/api`
+- app name: `CareConnectEMR`
+
+Angular serve uses the development configuration by default, which swaps in `environment.development.ts`.
+
+## Backend Endpoints In Use
+
+The frontend currently integrates with these backend endpoints:
 
 - `POST /Auth/login`
 - `POST /Auth/logout`
 - `POST /Auth/refresh-token`
 - `GET /Dashboard/summary`
 
-The app expects the API base URL from the Angular environment configuration.
+## Getting Started
 
-## Scripts
+### Prerequisites
+
+- Node.js
+- npm
+- Angular CLI compatible with Angular 20
+
+### Install
 
 ```bash
 npm install
+```
+
+### Start The Development Server
+
+```bash
 npm start
+```
+
+The app will run with the Angular development configuration and use the local API URL from `environment.development.ts`.
+
+### Build
+
+```bash
 npm run build
+```
+
+### Run Unit Tests
+
+```bash
 npm test
 ```
 
 ## Development Notes
 
-- The project uses standalone components instead of NgModules
-- Dependency injection follows modern Angular style with `inject()`
-- Signals are used for lightweight reactive state
-- Guards and interceptors are implemented as functional APIs
-- Some navigation items such as patients, appointments, and users are prepared in the sidebar config, but their feature routes/pages are not fully implemented yet in this frontend
+- The project uses standalone components instead of NgModules.
+- Dependency injection follows the modern `inject()` style.
+- Signals are used for auth state, layout state, and dashboard state.
+- Route guards and the interceptor are implemented with Angular functional APIs.
+- The login form includes a `rememberMe` control, but there is no separate remember-me persistence logic in the current frontend.
+- A `role-guard` file exists in `core/guards`, but it is not currently used by the active route configuration.
 
-## Build Status
+## Current Scope Summary
 
-- Production build is passing
-- There is currently a bundle-size warning during build, but it does not block compilation
+Implemented and working:
+
+- authentication and startup session refresh
+- protected shell layout
+- role-aware sidebar rendering
+- admin dashboard API integration
+- chart/table/stat-card dashboard widgets
+
+Present but not fully implemented:
+
+- patients, appointments, and users feature routes/pages
+- doctor dashboard feature content
+- receptionist dashboard feature content
 
 ## Author
 

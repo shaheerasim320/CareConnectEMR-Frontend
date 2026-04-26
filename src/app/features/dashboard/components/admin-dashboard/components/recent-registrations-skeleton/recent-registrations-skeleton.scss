@@ -1,0 +1,29 @@
+.skeleton {
+  background: #edf2f7;
+  border-radius: 4px;
+  
+  &.pulse {
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+
+  &.header-title { height: 24px; width: 150px; }
+  &.btn-placeholder { height: 32px; width: 32px; border-radius: 8px; }
+  &.avatar { height: 34px; width: 34px; border-radius: 10px; flex-shrink: 0; }
+  &.text-line { height: 12px; width: 100%; }
+}
+
+.table-skeleton-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 1rem;
+  padding: 1.25rem 0.5rem;
+  border-bottom: 1px solid #f8fafc;
+  
+  &.header-row { border-bottom: 1px solid #f1f4f8; }
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
