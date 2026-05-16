@@ -1,0 +1,129 @@
+.widget-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #edf2f7;
+
+    .card-header {
+        background: transparent;
+        border-bottom: 1px solid #f1f4f8;
+        padding: 1.25rem 1.5rem;
+    }
+
+    .text-blue {
+        color: #11438F;
+    }
+
+    .x-small {
+        font-size: 0.7rem;
+    }
+
+    .letter-spacing {
+        letter-spacing: 0.8px;
+    }
+
+    .avatar-circle {
+        width: 48px;
+        height: 48px;
+        background: #f0f4f8;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #a0aec0;
+    }
+
+    .time-box {
+        background-color: #f5f9ff;
+        border: 1px solid #eef4fb;
+
+        .time-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+        }
+
+        .dot-indicator {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        // Status-based coloring
+        .status-checkedin {
+            .status-label {
+                color: #10b981;
+            }
+
+            .dot-indicator {
+                background-color: #10b981;
+            }
+        }
+
+        .status-scheduled {
+            .status-label {
+                color: #6b7280;
+            }
+
+            .dot-indicator {
+                background-color: #6b7280;
+            }
+        }
+
+        .status-confirmed {
+            .status-label {
+                color: #3b82f6;
+            }
+
+            .dot-indicator {
+                background-color: #3b82f6;
+            }
+        }
+
+        .status-cancelled {
+            .status-label {
+                color: #ef4444;
+            }
+
+            .dot-indicator {
+                background-color: #ef4444;
+            }
+        }
+    }
+
+    .btn-primary {
+        background-color: #1a4f8b;
+        border: none;
+        transition: opacity 0.2s;
+
+        &:hover {
+            opacity: 0.9;
+        }
+    }
+
+    .btn-outline-light {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+
+        &:hover {
+            background: #f8fafc;
+        }
+    }
+
+    .empty-icon-bg {
+        width: 64px;
+        height: 64px;
+        background: #f8fafc;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        mat-icon {
+            font-size: 32px;
+            width: 32px;
+            height: 32px;
+        }
+    }
+}

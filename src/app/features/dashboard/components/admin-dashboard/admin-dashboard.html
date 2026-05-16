@@ -3,16 +3,16 @@
     <p class="mb-3 text text-muted">Monitor key clinical metrics and performance indicators</p>
 
 
-    <div class="row g-4 justify-content-center">
+    <div class="row g-4">
         @if (dashboardService.isLoading()) {
         @for (i of [1,2,3,4]; track i) {
-        <div class="col-12 col-md-6 col-lg-3 justify-content-center">
+        <div class="col-12 col-md-6 col-lg-3">
             <app-stat-card-skeleton />
         </div>
         }
         } @else {
         @for (stat of statsArray(); track stat.label) {
-        <div class="col-12 col-md-6 col-lg-3 justify-content-center">
+        <div class="col-12 col-md-6 col-lg-3">
             <app-stat-card [label]="stat.label" [value]="stat.count" [icon]="stat.icon" [trendValue]="stat.trendValue"
                 [trendType]="stat.trendType" [trendDirection]="stat.trendDirection" [comparison]="stat.trendComparison" [theme]="stat.theme" />
         </div>

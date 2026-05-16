@@ -3,7 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 
 import { tap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { AdminDashboardResponse } from '../../../core/models/dashboard/dashboard-response';
+import { AdminDashboardResponse, DoctorDashboardResponse } from '../../../core/models/dashboard/dashboard-response';
 import { ApiResponse } from '../../../core/models/api-response';
 
 @Injectable({
@@ -14,6 +14,7 @@ export class Dashboard {
   private readonly http = inject(HttpClient);
 
   adminData = signal<AdminDashboardResponse | null>(null);
+  doctorData = signal<DoctorDashboardResponse | null>(null);
   isLoading = signal<boolean>(false);
 
   getAdminDashboard() {
@@ -23,6 +24,20 @@ export class Dashboard {
         tap({
           next: (data) => {
             this.adminData.set(data.data);
+            this.isLoading.set(false);
+          },
+          error: () => this.isLoading.set(false)
+        })
+      );
+  }
+
+  getDoctorDashboard() {
+    this.isLoading.set(true);
+    return this.http.get<ApiResponse<DoctorDashboardResponse>>(`${this.api}/summary`)
+      .pipe(
+        tap({
+          next: (data) => {
+            this.doctorData.set(data.data);
             this.isLoading.set(false);
           },
           error: () => this.isLoading.set(false)

@@ -1,0 +1,62 @@
+.skeleton-wrapper {
+  background: #fff;
+  border-radius: 16px;
+  
+  .skeleton {
+    background: #f0f4f8;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+
+    &.shimmer::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      transform: translateX(-100%);
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, 0.6) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      animation: shimmer 2s infinite;
+    }
+  }
+
+  .icon-placeholder { width: 24px; height: 24px; border-radius: 6px; }
+  .header-title { width: 140px; height: 18px; }
+  .btn-placeholder { width: 70px; height: 30px; border-radius: 8px; }
+  .avatar { width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0; }
+  .text-line { height: 10px; border-radius: 2px; }
+  .label { height: 12px; width: 50px; }
+  .badge-placeholder { width: 80px; height: 24px; border-radius: 20px; }
+
+  .table-skeleton-header, .table-skeleton-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    align-items: center;
+  }
+
+  .table-skeleton-header { border-bottom: 1px solid #f1f4f8; }
+  .table-skeleton-row { border-bottom: 1px solid #f8fafc; }
+
+  .appointment-mobile-skeleton {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #edf2f7;
+  }
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+@media (max-width: 767px) {
+  .table-container { display: none !important; }
+  .mobile-cards-container { display: flex !important; flex-direction: column; }
+}
