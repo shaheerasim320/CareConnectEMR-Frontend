@@ -4,12 +4,12 @@
     <h6 class="fw-bold mb-0 text-blue">Top Doctors Today</h6>
   </div>
 
-  <div class="table-container d-none d-md-block">
+  <div class="table-container d-none d-md-flex">
     @if (doctors().length === 0) {
-    <div class="empty-state-container d-flex flex-column align-items-center justify-content-center py-5">
+    <div class="empty-state-container d-flex flex-column align-items-center justify-content-center py-5 h-100 w-100">
       <mat-icon class="text-muted opacity-25"
         style="font-size: 48px; width: 48px; height: 48px;">person_search</mat-icon>
-      <p class="text-muted mt-2 small">No appointments assigned to doctors yet today.</p>
+      <p class="text-muted mt-2 small text-center">No appointments assigned to doctors yet today.</p>
     </div>
     } @else {
     <table mat-table [dataSource]="doctors()">
@@ -46,9 +46,9 @@
     }
   </div>
 
-  <div class="mobile-cards-container d-md-none p-3">
+  <div class="mobile-cards-container d-flex d-md-none p-3">
     @if (doctors().length === 0) {
-    <div class="empty-state-container d-flex flex-column align-items-center justify-content-center py-5">
+    <div class="empty-state-container d-flex flex-column align-items-center justify-content-center py-5 h-100 w-100">
       <mat-icon class="text-muted opacity-25"
         style="font-size: 48px; width: 48px; height: 48px;">person_search</mat-icon>
       <p class="text-muted mt-2 small text-center">No appointments assigned to doctors yet today.</p>

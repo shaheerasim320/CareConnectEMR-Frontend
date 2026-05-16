@@ -1,4 +1,5 @@
 import { AppointmentBreakdown } from "./appointment-breakdown";
+import { AppointmentQueue } from "./appointment-queue";
 import { DoctorLoad } from "./doctor-load";
 import { NextAppointment } from "./next-appointment";
 import { RecentPatient } from "./recent-patient";
@@ -21,4 +22,11 @@ export interface DoctorDashboardResponse{
     totalPatientsSeen: StatCard;
     nextAppointment: NextAppointment | null;
     todaySchedule: TodaySchedule[];
+}
+
+export interface ReceptionistDashboardResponse{
+    appointmentsToday: StatCard;
+    checkedInNow: StatCard;
+    newPatientsToday: StatCard;
+    todayQueue: AppointmentQueue[]; 
 }

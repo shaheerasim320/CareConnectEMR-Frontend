@@ -1,22 +1,45 @@
 .widget-card {
+    display: flex;
+    flex-direction: column;
     background: #fff;
     border-radius: 16px;
     border: 1px solid #edf2f7;
     height: 100%;
+
+    .table-container {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
 
     .card-header {
         background: transparent;
         border-bottom: 1px solid #f1f4f8;
         padding: 1.25rem 1.5rem;
 
+        .icon-btn {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+
+            &:hover:not(:disabled) {
+                background-color: #F5F5F5;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            }
+
+            &:active:not(:disabled) {
+                transform: translateY(0);
+            }
+
+            &:disabled {
+                cursor: default;
+                opacity: 0.6;
+            }
+        }
     }
 
     .text-blue {
         color: #11438F;
-    }
-
-    .btn:hover{
-        background-color: #f0f4f8 !important;
     }
 
     table {
@@ -53,5 +76,11 @@
         border-radius: 10px;
         font-size: 11px;
         font-weight: 500;
+    }
+
+    .mobile-cards-container {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
     }
 }

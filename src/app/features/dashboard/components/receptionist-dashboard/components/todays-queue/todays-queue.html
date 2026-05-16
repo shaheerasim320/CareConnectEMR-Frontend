@@ -1,0 +1,117 @@
+<div class="widget-card shadow-sm">
+  <div class="card-header d-flex align-items-center text-blue justify-content-between">
+    <div class="d-flex gap-2 align-items-center">
+      @if (!showSearch()) {
+      <mat-icon class="text-blue">add_box</mat-icon>
+      <h6 class="fw-bold mb-0 text-blue">Today's Queue</h6>
+      } @else {
+      <div class="search-container animate-fade-in d-flex align-items-center gap-2">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input type="text" class="form-control form-control-sm search-input" placeholder="Search name or MRN..."
+          [(ngModel)]="searchTerm" autoFocus>
+      </div>
+      }
+    </div>
+    <button (click)="toggleSearch()" class="btn btn-sm rounded-3 border border-1 icon-btn"
+      [class.bg-light]="showSearch()">
+      <mat-icon>{{ showSearch() ? 'close' : 'filter_list_outline' }}</mat-icon>
+    </button>
+  </div>
+
+  <div class="table-container d-none d-md-flex">
+    @if (todaysQueue().length === 0) {
+    <div class="empty-state-container d-flex flex-column align-items-center justify-content-center py-5 h-100 w-100">
+      <mat-icon class="text-muted opacity-25" style="font-size: 48px; width: 48px; height: 48px;">event_busy</mat-icon>
+      <p class="text-muted mt-2 small text-center">No appointments scheduled for today yet.</p>
+    </div>
+    } @else {
+    <table mat-table [dataSource]="filteredQueue()">
+      <ng-container matColumnDef="patient">
+        <th mat-header-cell *matHeaderCellDef>Patient</th>
+        <td mat-cell *matCellDef="let queue">
+          <div class="d-flex align-items-center py-2">
+            <div class="avatar-initials">{{ getInitials(queue.patientName) }}</div>
+            <div class="ms-3 d-flex flex-column">
+              <span class="small fw-bold">{{ queue.patientName }}</span>
+              <span class="x-small text-muted">{{ queue.patientMRN }}</span>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="time">
+        <th mat-header-cell *matHeaderCellDef>Time</th>
+        <td mat-cell *matCellDef="let queue">{{ queue.startTime }} - {{ queue.endTime }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="doctor">
+        <th mat-header-cell *matHeaderCellDef>Doctor</th>
+        <td mat-cell *matCellDef="let queue">{{ queue.doctorName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="reason">
+        <th mat-header-cell *matHeaderCellDef>Reason</th>
+        <td mat-cell *matCellDef="let queue">{{ queue.reason }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let queue">
+          <span class="badge rounded-pill status-badge" [ngClass]="'status-' + queue.status.toLowerCase()">
+            {{ queue.status }}
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    }
+  </div>
+
+  <div class="mobile-cards-container d-flex d-md-none p-3 flex-column">
+    @if (todaysQueue().length === 0) {
+    <div class="empty-state-container d-flex flex-column align-items-center justify-content-center py-5 h-100 w-100">
+      <mat-icon class="text-muted opacity-25" style="font-size: 48px; width: 48px; height: 48px;">event_busy</mat-icon>
+      <p class="text-muted mt-2 small text-center">No appointments scheduled for today yet.</p>
+    </div>
+    } @else {
+    @for (queue of filteredQueue(); track queue.id) {
+    <div class="appointment-mobile-card mb-3 p-3">
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <div class="d-flex align-items-center">
+          <div class="avatar-initials">{{ getInitials(queue.patientName) }}</div>
+          <div class="ms-3">
+            <div class="fw-bold small">{{ queue.patientName }}</div>
+            <div class="text-muted x-small">MRN: {{ queue.patientMRN }}</div>
+          </div>
+        </div>
+        <span class="badge rounded-pill status-badge" [ngClass]="'status-' + queue.status.toLowerCase()">
+          {{ queue.status }}
+        </span>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="d-flex align-items-center text-dark x-small fw-medium">
+          <mat-icon class="me-1" style="font-size: 16px; width: 16px; height: 16px;">medical_services</mat-icon>
+          {{ queue.doctorName }}
+        </div>
+        <div class="d-flex align-items-center text-muted x-small">
+          <mat-icon class="me-1" style="font-size: 16px; width: 16px; height: 16px;">schedule</mat-icon>
+          {{ queue.startTime }} - {{ queue.endTime }}
+        </div>
+      </div>
+
+      @if(queue.reason) {
+      <div class="mt-2 pt-2 border-top">
+        <div class="d-flex align-items-start text-muted x-small italic">
+          <mat-icon class="me-1 mt-1" style="font-size: 14px; width: 14px; height: 14px;">chat_bubble_outline</mat-icon>
+          <span class="text-truncate">{{ queue.reason }}</span>
+        </div>
+      </div>
+      }
+    </div>
+    }
+    }
+  </div>
+</div>

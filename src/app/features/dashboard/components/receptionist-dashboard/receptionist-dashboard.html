@@ -1,0 +1,34 @@
+<div class="dashboard container-fluid">
+    <h4 class="fw-bold mb-0">Clinical Dashboard</h4>
+    <p class="mb-3 text text-muted">Monitor key clinical metrics and performance indicators</p>
+
+
+    <div class="row g-4">
+        @if (dashboardService.isLoading()) {
+        @for (i of [1,2,3]; track i) {
+        <div class="col-12 col-md-6 col-lg-4">
+            <app-stat-card-skeleton />
+        </div>
+        }
+        } @else {
+        @for (stat of statsArray(); track stat.label) {
+        <div class="col-12 col-md-6 col-lg-4">
+            <app-stat-card [label]="stat.label" [value]="stat.count" [icon]="stat.icon" [trendValue]="stat.trendValue"
+                [trendType]="stat.trendType" [trendDirection]="stat.trendDirection" [comparison]="stat.trendComparison"
+                [theme]="stat.theme" />
+        </div>
+        }
+        }
+    </div>
+
+    <div class="row g-4 mt-2">
+        <div class="col-12">
+            @if (dashboardService.isLoading()) {
+            <app-todays-queue-skeleton />
+            } @else {
+                <app-todays-queue [todaysQueue]="dashboardService.receptionistData()?.todayQueue ?? []" />
+            }
+        </div>
+    </div>
+
+</div>

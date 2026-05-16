@@ -154,7 +154,7 @@ The dashboard host component chooses which dashboard to display based on `curren
 
 ### Admin Dashboard
 
-The admin dashboard is the most complete area of the app. It fetches data from:
+The admin dashboard provides a high-level overview of the system's clinical activity. It fetches data from:
 
 - `GET /Dashboard/summary`
 
@@ -187,7 +187,16 @@ Key files:
 
 ### Receptionist Dashboard
 
-`ReceptionistDashboard` component exists, but it is currently a placeholder without live feature logic.
+The receptionist dashboard is implemented. It includes:
+
+- Today's Appointments management
+- Quick patient registration access
+- Facility-wide clinical stat cards
+- Loading skeletons
+
+Key files:
+
+- [`src/app/features/dashboard/components/receptionist-dashboard`](src/app/features/dashboard/components/receptionist-dashboard)
 
 ## Environment Configuration
 
@@ -261,12 +270,12 @@ Implemented and working:
 - role-aware sidebar rendering
 - admin dashboard API integration
 - doctor dashboard API integration (Today's Schedule, Next Appointment)
+- receptionist dashboard API integration (Daily Appointments)
 - chart/table/stat-card dashboard widgets
 
 Present but not fully implemented:
 
 - patients, appointments, and users feature routes/pages
-- receptionist dashboard feature content
 
 ## Author
 

@@ -1,0 +1,190 @@
+.widget-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #edf2f7;
+    height: 100%;
+    overflow: hidden;
+
+    .card-header {
+        flex-shrink: 0;
+        background: transparent;
+        border-bottom: 1px solid #f1f4f8;
+        padding: 1.25rem 1.5rem;
+
+        .text-blue {
+            color: #11438F;
+        }
+
+        .icon-btn {
+            transition: all 0.2s ease-in-out;
+
+            &:hover {
+                background-color: #F5F5F5;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            }
+
+            &:active {
+                transform: translateY(0);
+            }
+        }
+    }
+
+    .table-container {
+        flex-grow: 1; 
+        display: flex; 
+        flex-direction: column;
+
+        .empty-state-container {
+            flex-grow: 1; 
+            width: 100%;
+        }
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    table {
+        width: 100%;
+        background: transparent;
+
+        .mat-mdc-header-cell {
+            color: #718096;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            padding: 1rem;
+            border-bottom: 1px solid #f1f4f8;
+        }
+
+        .mat-mdc-cell {
+            padding: 1rem 0.5rem;
+            border-bottom: 1px solid #f8fafc;
+        }
+
+        .mat-mdc-row:last-child .mat-mdc-cell {
+            border-bottom: none;
+        }
+    }
+
+    .x-small {
+        font-size: 0.75rem !important;
+    }
+
+    .avatar-initials {
+        width: 34px;
+        height: 34px;
+        background: #f0f4f8;
+        color: #11438F;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        font-size: 11px;
+        font-weight: 500;
+    }
+
+    .status-badge {
+        padding: 0.5em 1em;
+        font-weight: 500;
+        font-size: 0.75rem;
+        text-transform: capitalize;
+        letter-spacing: 0.3px;
+
+        &.status-scheduled {
+            background-color: #f3f4f6;
+            color: #4b5563;
+            border: 1px solid #e5e7eb;
+        }
+
+        &.status-confirmed {
+            background-color: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #dbeafe;
+        }
+
+        &.status-checkedin {
+            background-color: #ecfdf5;
+            color: #047857;
+            border: 1px solid #d1fae5;
+        }
+
+        &.status-completed {
+            background-color: #f0fdfa;
+            color: #0f766e;
+            border: 1px solid #ccfbf1;
+        }
+
+        &.status-cancelled {
+            background-color: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fee2e2;
+        }
+
+        &.status-noshow {
+            background-color: #fff7ed;
+            color: #c2410c;
+            border: 1px solid #ffedd5;
+        }
+    }
+
+    .appointment-mobile-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #edf2f7;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        transition: transform 0.1s ease;
+
+        &:active {
+            transform: scale(0.98); // Feedback on tap
+        }
+
+        .avatar-initials {
+            flex-shrink: 0;
+            background: #f0f7ff; // Light blue tint for receptionist view
+        }
+
+        mat-icon {
+            color: #718096; // Consistent icon color
+        }
+
+        .italic {
+            font-style: italic;
+        }
+
+        .text-truncate {
+            display: block;
+            max-width: 100%;
+        }
+    }
+
+    .mobile-cards-container {
+        flex-direction: column;
+        flex-grow: 1;
+        gap: 8px;
+    }
+
+
+    @media (min-width: 768px) {
+        .d-md-block {
+            display: block !important;
+        }
+
+        .d-md-none {
+            display: none !important;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .table-container {
+            display: none !important;
+        }
+
+        .mobile-cards-container {
+            display: flex !important;
+        }
+    }
+}
