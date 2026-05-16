@@ -12,7 +12,7 @@ export function initializeApp(auth: Auth) {
   return () =>
     firstValueFrom(
       auth.refreshToken().pipe(
-        timeout(5000), // Prevent infinite loading if backend hangs
+        timeout(5000),
         catchError(() => of(null))
       )
     );

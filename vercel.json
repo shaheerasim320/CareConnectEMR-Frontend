@@ -3,8 +3,12 @@
   "public": true,
   "rewrites": [
     {
+      "source": "/bff/:path*",
+      "destination": "https://careconnectemr-backend.runasp.net/api/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
-}
+}

@@ -1,0 +1,11 @@
+{
+  "/bff": {
+    "target": "https://localhost:7024",
+    "secure": false,
+    "pathRewrite": {
+      "^/bff": "/api"
+    },
+    "changeOrigin": true,
+    "logLevel": "info"
+  }
+}

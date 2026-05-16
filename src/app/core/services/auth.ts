@@ -7,8 +7,6 @@ import { environment } from '../../../environments/environment';
 import { catchError, finalize, of, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { ApiResponse } from '../models/api-response';
-import { LogoutRequest } from '../models/auth/logout-request';
-import { RefreshTokenRequest } from '../models/auth/refresh-token-request';
 
 @Injectable({
   providedIn: 'root',
@@ -19,17 +17,13 @@ export class Auth {
 
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
+
   private accessToken: string | null = null;
   currentUser = signal<User | null>(null);
   isLoggingOut = signal(false);
 
   private setSession(auth: AuthResponse) {
     this.accessToken = auth.accessToken;
-    if (auth.refreshToken) {
-      localStorage.setItem('refreshToken', auth.refreshToken);
-    } else {
-      localStorage.removeItem('refreshToken');
-    }
     this.currentUser.set({
       id: auth.userId,
       fullName: auth.fullName,
@@ -40,11 +34,14 @@ export class Auth {
   clearSession() {
     this.accessToken = null;
     this.currentUser.set(null);
-    localStorage.removeItem('refreshToken');
   }
 
   login(request: LoginRequest) {
-    return this.http.post<ApiResponse<AuthResponse>>(`${this.api}/login`, request, { withCredentials: true }).pipe(
+    return this.http.post<ApiResponse<AuthResponse>>(
+      `${this.api}/login`,
+      request,
+      { withCredentials: true }
+    ).pipe(
       tap(res => {
         if (!res.isSuccess) return;
         this.setSession(res.data);
@@ -57,13 +54,11 @@ export class Auth {
   }
 
   logout() {
-    const refreshToken = localStorage.getItem('refreshToken');
-    const logoutRequest: LogoutRequest = refreshToken ? { refreshToken } : {};
     this.isLoggingOut.set(true);
     return this.http
-      .post(`${this.api}/logout`, logoutRequest)
+      .post(`${this.api}/logout`, {}, { withCredentials: true })
       .pipe(
-        catchError((error) => of(null)),
+        catchError(() => of(null)),
         finalize(() => {
           this.isLoggingOut.set(false);
           this.clearSession();
@@ -73,23 +68,17 @@ export class Auth {
   }
 
   refreshToken() {
-    const token = localStorage.getItem('refreshToken');
-
-    if (!token) {
-      this.clearSession();
-      return throwError(() => new Error('No refresh token available'));
-    }
-
-    const refreshTokenRequest: RefreshTokenRequest = {
-      refreshToken: token
-    };
-
     return this.http.post<ApiResponse<AuthResponse>>(
       `${this.api}/refresh-token`,
-      refreshTokenRequest
+      {},
+      { withCredentials: true }
     ).pipe(
       tap(res => {
         if (res.isSuccess) this.setSession(res.data);
+      }),
+      catchError(err => {
+        this.clearSession();
+        return throwError(() => err);
       })
     );
   }
@@ -98,3 +87,4 @@ export class Auth {
     return this.currentUser() !== null;
   }
 }
+
