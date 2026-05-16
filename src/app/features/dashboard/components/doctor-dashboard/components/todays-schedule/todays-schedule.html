@@ -7,11 +7,11 @@
     <button class="btn btn-sm rounded-2 border border-1 icon-btn cursor-pointer" routerLink="/appointments">View All</button>
   </div>
 
-  <div class="table-container d-none d-md-block">
+  <div class="table-container d-none d-md-flex">
     @if (todaysSchedule().length === 0) {
-    <div class="empty-state-container d-flex flex-column align-items-center justify-content-center py-5">
+    <div class="empty-state-container d-flex flex-column align-items-center justify-content-center py-5 h-100 w-100">
       <mat-icon class="text-muted opacity-25" style="font-size: 48px; width: 48px; height: 48px;">event_busy</mat-icon>
-      <p class="text-muted mt-2 small">No appointments scheduled for today yet.</p>
+      <p class="text-muted mt-2 small text-center">No appointments scheduled for today yet.</p>
     </div>
     } @else {
     <table mat-table [dataSource]="todaysSchedule()">
@@ -47,9 +47,9 @@
     }
   </div>
 
-  <div class="mobile-cards-container d-md-none p-3">
+  <div class="mobile-cards-container d-flex d-md-none p-3">
     @if (todaysSchedule().length === 0) {
-    <div class="empty-state-container d-flex flex-column align-items-center justify-content-center py-5">
+    <div class="empty-state-container d-flex flex-column align-items-center justify-content-center py-5 h-100 w-100">
       <mat-icon class="text-muted opacity-25"
         style="font-size: 48px; width: 48px; height: 48px;">event_busy</mat-icon>
       <p class="text-muted mt-2 small text-center">No appointments scheduled for today yet.</p>

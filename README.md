@@ -85,6 +85,45 @@ Related pieces:
 - [`src/app/core/guards/guest-guard.ts`](src/app/core/guards/guest-guard.ts)
 - [`src/app/app.config.ts`](src/app/app.config.ts)
 
+## BFF (Backend-For-Frontend) Architecture
+
+To handle modern browser security requirements and ensure reliable cookie management, this project employs a **Backend-For-Frontend (BFF)** pattern.
+
+### Vercel Proxying (Production)
+The frontend acts as a proxy for the backend API. This ensures that all requests to the backend appear to come from the same origin as the frontend, avoiding CORS issues and allowing for secure cookie handling.
+
+Configured in [`vercel.json`](vercel.json):
+
+```json
+{
+  "rewrites": [
+    {
+      "source": "/bff/:path*",
+      "destination": "https://careconnectemr-backend.runasp.net/api/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
+```
+
+### Local Development Proxy
+In local development, the Angular CLI's proxy configuration ([`proxy.conf.json`](proxy.conf.json)) is used to achieve similar behavior by mapping `/bff` to the local .NET API:
+
+```json
+{
+  "/bff": {
+    "target": "https://localhost:7024",
+    "secure": false,
+    "pathRewrite": {
+      "^/bff": "/api"
+    }
+  }
+}
+```
+
 ## Layout And Navigation
 
 Authenticated pages render inside a shared shell:
@@ -133,9 +172,22 @@ Key files:
 - [`src/app/features/dashboard/services/dashboard.ts`](src/app/features/dashboard/services/dashboard.ts)
 - [`src/app/features/dashboard/components/admin-dashboard`](src/app/features/dashboard/components/admin-dashboard)
 
-### Doctor And Receptionist Dashboards
+### Doctor Dashboard
 
-`DoctorDashboard` and `ReceptionistDashboard` components exist, but they are currently placeholders without live feature logic.
+The doctor dashboard is implemented. It includes:
+
+- Today's Schedule widget (tabular and card views)
+- Next Appointment summary
+- Clinical stat cards
+- Loading skeletons
+
+Key files:
+
+- [`src/app/features/dashboard/components/doctor-dashboard`](src/app/features/dashboard/components/doctor-dashboard)
+
+### Receptionist Dashboard
+
+`ReceptionistDashboard` component exists, but it is currently a placeholder without live feature logic.
 
 ## Environment Configuration
 
@@ -143,8 +195,7 @@ Environment files live in [`src/environments`](src/environments).
 
 Current values in the repo:
 
-- development API URL: `https://localhost:7024/api`
-- production API URL: `http://careconnectemr-backend.runasp.net/api`
+- API URL: `/bff` (proxied via Vercel or local proxy)
 - app name: `CareConnectEMR`
 
 Angular serve uses the development configuration by default, which swaps in `environment.development.ts`.
@@ -156,7 +207,7 @@ The frontend currently integrates with these backend endpoints:
 - `POST /Auth/login`
 - `POST /Auth/logout`
 - `POST /Auth/refresh-token`
-- `GET /Dashboard/summary`
+- `GET /Dashboard/summary` (role-aware summary data for Admin, Doctor, and Receptionist)
 
 ## Getting Started
 
@@ -209,12 +260,12 @@ Implemented and working:
 - protected shell layout
 - role-aware sidebar rendering
 - admin dashboard API integration
+- doctor dashboard API integration (Today's Schedule, Next Appointment)
 - chart/table/stat-card dashboard widgets
 
 Present but not fully implemented:
 
 - patients, appointments, and users feature routes/pages
-- doctor dashboard feature content
 - receptionist dashboard feature content
 
 ## Author
