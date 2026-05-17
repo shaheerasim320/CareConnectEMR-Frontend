@@ -52,7 +52,7 @@ export class StatCard {
     }
 
     if (this.trendType() === 'Number') {
-      return `${trend}`;
+      return `${Math.round(trend)}`;
     }
 
     return '';

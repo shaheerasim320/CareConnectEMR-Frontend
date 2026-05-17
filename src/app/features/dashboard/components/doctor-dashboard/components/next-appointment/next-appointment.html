@@ -20,14 +20,14 @@
         </div>
         <div class="ms-3">
           <h6 class="fw-bold mb-0 text-dark">{{ data()!.patientName }}</h6>
-          <p class="text-muted small mb-0">MRN-{{ data()!.patientMRN }}</p>
+          <p class="text-muted small mb-0">{{ data()!.patientMRN }}</p>
         </div>
       </div>
 
       <div class="time-box p-3 rounded-4 mb-4">
         <div class="d-flex align-items-center gap-2 text-blue">
           <mat-icon class="time-icon">schedule</mat-icon>
-          <span class="fw-bold small">{{ data()!.startTime }} – {{ data()!.endTime }}</span>
+          <span class="fw-bold small">{{ data()!.startTime | date:'shortTime' }} - {{ data()!.endTime | date:'shortTime' }}</span>
         </div>
       </div>
 

@@ -7,7 +7,8 @@ import { Auth } from '../services/auth';
 let isRefreshing = false;
 let refreshSubject = new BehaviorSubject<string | null>(null);
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  if ( req.url.includes('/auth/login') || req.url.includes('/auth/logout') || req.url.includes('/auth/refresh-token') || req.url.includes('/auth/me')) {
+  const urlLower = req.url.toLowerCase();
+  if ( urlLower.includes('/auth/login') || urlLower.includes('/auth/logout') || urlLower.includes('/auth/refresh-token') || urlLower.includes('/auth/me')) {
     return next(req);
   }
   const authService = inject(Auth);

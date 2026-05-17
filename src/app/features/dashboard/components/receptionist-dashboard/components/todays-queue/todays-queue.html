@@ -41,7 +41,7 @@
 
       <ng-container matColumnDef="time">
         <th mat-header-cell *matHeaderCellDef>Time</th>
-        <td mat-cell *matCellDef="let queue">{{ queue.startTime }} - {{ queue.endTime }} </td>
+        <td mat-cell *matCellDef="let queue">{{ queue.startTime | date:'shortTime' }} - {{ queue.endTime | date:'shortTime' }} </td>
       </ng-container>
 
       <ng-container matColumnDef="doctor">
@@ -98,7 +98,7 @@
         </div>
         <div class="d-flex align-items-center text-muted x-small">
           <mat-icon class="me-1" style="font-size: 16px; width: 16px; height: 16px;">schedule</mat-icon>
-          {{ queue.startTime }} - {{ queue.endTime }}
+          {{ queue.startTime | date:'shortTime' }} - {{ queue.endTime | date:'shortTime' }}
         </div>
       </div>
 
