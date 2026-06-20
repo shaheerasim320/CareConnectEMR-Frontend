@@ -1,12 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { Auth } from '../../core/services/auth';
+import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { Layout } from '../../core/services/layout';
+import { LayoutService } from '../../core/services/layout.service';
 
 @Component({
   selector: 'app-header',
@@ -15,8 +12,8 @@ import { Layout } from '../../core/services/layout';
   styleUrl: './header.scss',
 })
 export class Header {
-  authService = inject(Auth);
-  private layoutService = inject(Layout);
+  authService = inject(AuthService);
+  private layoutService = inject(LayoutService);
   user = this.authService.currentUser;
   isProfileOpen: boolean = false;
 

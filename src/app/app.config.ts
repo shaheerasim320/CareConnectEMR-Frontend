@@ -1,22 +1,12 @@
-import { ApplicationConfig, APP_INITIALIZER, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, inject, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, TitleStrategy } from '@angular/router';
 
 import { routes } from './app.routes';
 import { AppTitleStrategy } from './core/strategies/page-title';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './core/interceptors/auth-interceptor';
-import { Auth } from './core/services/auth';
+import { AuthService } from './core/services/auth.service';
 import { catchError, firstValueFrom, of, timeout } from 'rxjs';
-
-export function initializeApp(auth: Auth) {
-  return () =>
-    firstValueFrom(
-      auth.refreshToken().pipe(
-        timeout(5000),
-        catchError(() => of(null))
-      )
-    );
-}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,11 +14,15 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor])),
     { provide: TitleStrategy, useClass: AppTitleStrategy },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeApp,
-      deps: [Auth],
-      multi: true
-    }
-  ]
+    provideAppInitializer(() => {
+      const auth = inject(AuthService);
+
+      return firstValueFrom(
+        auth.refreshToken().pipe(
+          timeout(5000),
+          catchError(() => of(null))
+        )
+      );
+    }),
+  ],
 };

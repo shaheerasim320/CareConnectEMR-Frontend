@@ -1,4 +1,4 @@
-import { StatCard } from "../../core/models/dashboard/stat-card";
+import { StatCard } from "../../features/dashboard/models/stat-card";
 
 export interface StatCardUI extends StatCard{
     label: string;

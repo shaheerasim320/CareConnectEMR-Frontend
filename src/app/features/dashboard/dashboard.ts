@@ -1,8 +1,8 @@
 import { Component, computed, inject } from '@angular/core';
-import { Auth } from '../../core/services/auth';
-import { AdminDashboard } from './components/admin-dashboard/admin-dashboard';
-import { DoctorDashboard } from './components/doctor-dashboard/doctor-dashboard';
-import { ReceptionistDashboard } from './components/receptionist-dashboard/receptionist-dashboard';
+import { AuthService } from '../../core/services/auth.service';
+import { AdminDashboard } from './roles/admin/admin-dashboard';
+import { DoctorDashboard } from './roles/doctor/doctor-dashboard';
+import { ReceptionistDashboard } from './roles/receptionist/receptionist-dashboard';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,6 +11,6 @@ import { ReceptionistDashboard } from './components/receptionist-dashboard/recep
   styleUrl: './dashboard.scss',
 })
 export class Dashboard {
-  private authService = inject(Auth);
+  private authService = inject(AuthService);
   userRole = computed(()=> this.authService.currentUser()?.role);
 }

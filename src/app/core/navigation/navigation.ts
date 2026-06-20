@@ -1,29 +1,30 @@
-import { NavItem } from "../models/nav-item";
+import { PERMISSIONS } from "../auth/permissions";
+import { NavItem } from "./nav-item";
 
 export const NAV_ITEMS: NavItem[] = [
     {
         label: 'Dashboard',
         icon: 'dashboard',
         route: '/dashboard',
-        roles: ['Admin', 'Doctor', 'Receptionist']
+        permission: PERMISSIONS.ViewDashboard,
     },
     {
         label: 'Patients',
         icon: 'people',
         route: '/patients',
-        roles: ['Admin', 'Doctor', 'Receptionist']
+        permission: PERMISSIONS.ViewPatients,
     },
     {
         label: 'Appointments',
         icon: 'event',
         route: '/appointments',
-        roles: ['Admin', 'Doctor', 'Receptionist']
+        permission: PERMISSIONS.ViewAppointments,
     },
     {
         label: 'Users',
         icon: 'person',
         route: '/users',
-        roles: ['Admin']
+        permission: PERMISSIONS.ManageUsers,
     },
     
 ]

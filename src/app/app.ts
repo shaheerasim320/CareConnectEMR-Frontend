@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Auth } from './core/services/auth';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,5 +10,5 @@ import { Auth } from './core/services/auth';
 })
 export class App {
   protected readonly title = signal('CareConnectEMR');
-  protected readonly auth = inject(Auth);
+  protected readonly auth = inject(AuthService);
 }

@@ -1,10 +1,11 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from "@angular/router";
-import { Auth } from '../../core/services/auth';
+import { AuthService } from '../../core/services/auth.service';
 import { NAV_ITEMS } from '../../core/navigation/navigation';
 import { MatIcon } from "@angular/material/icon";
-import { Layout } from '../../core/services/layout';
+import { LayoutService } from '../../core/services/layout.service';
 import { CommonModule } from '@angular/common';
+import { hasPermission } from '../../core/auth/role-permissions';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,8 +14,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './sidebar.scss',
 })
 export class Sidebar {
-  authService = inject(Auth);
-  layoutService = inject(Layout);
+  authService = inject(AuthService);
+  layoutService = inject(LayoutService);
   private navItems = NAV_ITEMS;
   user = this.authService.currentUser;
 
@@ -22,7 +23,7 @@ export class Sidebar {
     const role = this.authService.currentUser()?.role;
 
     return this.navItems.filter(item =>
-      item.roles.includes(role ?? '')
+      hasPermission(role, item.permission)
     );
   });
 

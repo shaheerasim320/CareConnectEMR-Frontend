@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Sidebar } from '../sidebar/sidebar';
 import { Header } from '../header/header';
 import { RouterOutlet } from '@angular/router';
-import { Layout } from '../../core/services/layout';
+import { LayoutService } from '../../core/services/layout.service';
 
 @Component({
   selector: 'app-shell',
@@ -11,5 +11,5 @@ import { Layout } from '../../core/services/layout';
   styleUrl: './shell.scss',
 })
 export class Shell {
-  layoutService = inject(Layout);
+  layoutService = inject(LayoutService);
 }

@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, filter, switchMap, take, throwError } from 'rxjs';
-import { Auth } from '../services/auth';
+import { AuthService } from '../services/auth.service';
 
 let isRefreshing = false;
 let refreshSubject = new BehaviorSubject<string | null>(null);
@@ -11,7 +11,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   if ( urlLower.includes('/auth/login') || urlLower.includes('/auth/logout') || urlLower.includes('/auth/refresh-token') || urlLower.includes('/auth/me')) {
     return next(req);
   }
-  const authService = inject(Auth);
+  const authService = inject(AuthService);
   const router = inject(Router);
 
   const token = authService.getAccessToken();
@@ -36,6 +36,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
         return authService.refreshToken().pipe(
           switchMap(res => {
+            if(!res.isSuccess || !res.data){
+              authService.clearSession();
+              router.navigate(['/login']);
+              return throwError(()=> new Error('Refresh token failed'));
+            }
 
             const newToken = res.data.accessToken;
 

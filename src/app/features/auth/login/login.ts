@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { Auth } from '../../../core/services/auth';
+import { AuthService } from '../../../core/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Snackbar } from '../../../core/services/snackbar';
+import { SnackbarService } from '../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-login',
@@ -14,9 +14,9 @@ import { Snackbar } from '../../../core/services/snackbar';
 })
 export class Login {
   private readonly fb = inject(NonNullableFormBuilder);
-  private readonly authService = inject(Auth);
+  private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly snackbar = inject(Snackbar);
+  private readonly snackbar = inject(SnackbarService);
   private readonly route = inject(ActivatedRoute);
 
 
