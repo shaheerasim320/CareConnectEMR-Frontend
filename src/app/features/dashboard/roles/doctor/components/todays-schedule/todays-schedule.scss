@@ -58,11 +58,19 @@
             font-weight: 600;
             padding: 1rem;
             border-bottom: 1px solid #f1f4f8;
+
+            &:first-child {
+                padding-left: 1.5rem;
+            }
         }
 
         .mat-mdc-cell {
             padding: 1rem 0.5rem;
             border-bottom: 1px solid #f8fafc;
+
+            &:first-child {
+                padding-left: 1.5rem;
+            }
         }
 
         .mat-mdc-row:last-child .mat-mdc-cell {
