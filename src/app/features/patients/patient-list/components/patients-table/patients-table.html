@@ -1,0 +1,157 @@
+<div class="patient-table">
+    <div class="table-container d-none d-md-block">
+        <table mat-table [dataSource]="patients()">
+            <ng-container matColumnDef="mrn">
+                <th mat-header-cell *matHeaderCellDef>MRN</th>
+                <td mat-cell *matCellDef="let pat"> {{ pat.mrn }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="fullName">
+                <th mat-header-cell *matHeaderCellDef>Full Name</th>
+                <td mat-cell *matCellDef="let pat">
+                    <div class="d-flex align-items-center py-2">
+                        <div class="avatar-initials">{{ getIntials(pat.fullName) }}</div>
+                        <div class="ms-3 small">{{ pat.fullName }}</div>
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="age">
+                <th mat-header-cell *matHeaderCellDef>Age</th>
+                <td mat-cell *matCellDef="let pat">{{ pat.age }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="gender">
+                <th mat-header-cell *matHeaderCellDef>Gender</th>
+                <td mat-cell *matCellDef="let pat">{{ pat.gender }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="phoneNumber">
+                <th mat-header-cell *matHeaderCellDef>Phone</th>
+                <td mat-cell *matCellDef="let pat">{{ pat.phoneNumber }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="bloodType">
+                <th mat-header-cell *matHeaderCellDef>Blood Type</th>
+                <td mat-cell *matCellDef="let pat">{{ pat.bloodType }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let pat">
+                    <div class="bagde rounded-pill status-badge" [ngClass]="'status-' + pat.status.toLowerCase()">{{
+                        pat.status }}</div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="registered">
+                <th mat-header-cell *matHeaderCellDef>Registered At</th>
+                <td mat-cell *matCellDef="let pat">{{ pat.createdAt | date:'short' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let pat">
+                    <div class="row-actions">
+                        <button mat-icon-button class="action-button action-button--view" title="View patient"
+                            aria-label="View patient">
+                            <mat-icon>visibility</mat-icon>
+                        </button>
+                        <button mat-icon-button class="action-button action-button--edit" title="Edit patient"
+                            aria-label="Edit patient">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        @if (canManageStatus()) {
+                        <button mat-icon-button class="action-button"
+                            [class.action-button--deactivate]="isActive(pat.status)"
+                            [class.action-button--activate]="!isActive(pat.status)"
+                            [title]="isActive(pat.status) ? 'Deactivate patient' : 'Activate patient'"
+                            (click)="statusChange.emit(pat)">
+                            <mat-icon>{{ isActive(pat.status) ? 'person_off' : 'person_check' }}</mat-icon>
+                        </button>
+                        }
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                [class.deactivated-row]="!isActive(row.status)"></tr>
+        </table>
+    </div>
+    @if (patients().length === 0) {
+    <div class="empty-state"><mat-icon>person_search</mat-icon>
+        <h6>No patients found</h6>
+        <p>Try changing the search or filters.</p>
+    </div>
+    }
+    <div class="mobile-list d-md-none">
+        @for (pat of patients(); track pat.id) {
+        <article class="patient-row" [class.patient-row--inactive]="!isActive(pat.status)">
+            <div class="patient-row__header">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="avatar-initials">{{ getIntials(pat.fullName) }}</div>
+                    <div>
+                        <strong>{{ pat.fullName }}</strong>
+                        <small>{{ pat.mrn }}</small>
+                    </div>
+                </div>
+                <span class="status-badge rounded-4 px-2" [ngClass]="'status-' + pat.status.toLowerCase()">
+                    {{ pat.status }}
+                </span>
+            </div>
+
+            <div class="patient-row__fields">
+                <span><label>Age:</label> {{ pat.age }}</span>
+                <span><label>Gender:</label> {{ pat.gender }}</span>
+                <span><label>Blood Type:</label> {{ pat.bloodType }}</span>
+                <span><label>Phone:</label> {{ pat.phoneNumber }}</span>
+                <span><label>Registered:</label> {{ pat.createdAt | date:'M/d/yy' }}</span>
+            </div>
+
+            <div class="patient-row__actions">
+                <button type="button" class="mobile-action">
+                    <mat-icon>visibility</mat-icon> View
+                </button>
+                <button type="button" class="mobile-action">
+                    <mat-icon>edit</mat-icon> Edit
+                </button>
+                @if (canManageStatus()) {
+                <button type="button" class="mobile-action" [class.mobile-action--deactivate]="isActive(pat.status)"
+                    [class.mobile-action--reactivate]="!isActive(pat.status)" (click)="statusChange.emit(pat)">
+                    <mat-icon>{{ isActive(pat.status) ? 'person_off' : 'person_check' }}</mat-icon>
+                    {{ isActive(pat.status) ? 'Deactivate' : 'Reactivate' }}
+                </button>
+                }
+            </div>
+        </article>
+        } @empty {
+        <div class="empty-state"><mat-icon>person_search</mat-icon>
+            <h6>No patients found</h6>
+            <p>Try changing the search or filters.</p>
+        </div>
+        }
+    </div>
+    <footer class="table-footer">
+        <span>{{ rangeLabel() }}</span>
+        @if (totalCount() > 0) {
+        <div class="pagination-controls" aria-label="Patient directory pagination">
+            <label>Rows:
+                <select [value]="pageSize()" (change)="changePageSize($any($event.target).value)">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                </select>
+            </label>
+            <button type="button" class="page-button" [disabled]="page() === 1" (click)="goToPage(page() - 1)"
+                aria-label="Previous page"><mat-icon>chevron_left</mat-icon></button>
+            @for (pageNumber of pages(); track pageNumber) {
+            <button type="button" class="page-button" [class.is-current]="pageNumber === page()"
+                (click)="goToPage(pageNumber)">{{ pageNumber }}</button>
+            }
+            <button type="button" class="page-button" [disabled]="page() === totalPages()"
+                (click)="goToPage(page() + 1)" aria-label="Next page"><mat-icon>chevron_right</mat-icon></button>
+        </div>
+        }
+    </footer>
+</div>

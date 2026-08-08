@@ -1,0 +1,7 @@
+.table-skeleton { padding: .5rem 1.5rem 1rem; }
+.skeleton-row { display: grid; grid-template-columns: 1fr 2fr .7fr 1.2fr 1fr; gap: 1rem; align-items: center; min-height: 4rem; border-bottom: 1px solid #edf2f7; }
+.skeleton-row span { height: .85rem; border-radius: .35rem; background: linear-gradient(90deg, #edf2f7 25%, #f7fafc 50%, #edf2f7 75%); background-size: 200% 100%; animation: shimmer 1.3s infinite; }
+.skeleton-header { min-height: 3rem; }
+.skeleton-header span { height: .65rem; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+@media (max-width: 767.98px) { .skeleton-row { grid-template-columns: 1.5fr 2fr .8fr; } .skeleton-row span:nth-child(n+4) { display: none; } }

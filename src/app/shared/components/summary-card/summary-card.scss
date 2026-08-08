@@ -1,0 +1,24 @@
+$custom-blue: #004573;
+$secondary-grey: #64748B;
+
+.stat-card {
+  overflow: hidden;
+
+  .card-watermark {
+    position: absolute;
+    font-size: 7rem !important;
+    top: 10px;
+    right: -15px;
+    opacity: 0.08;
+    pointer-events: none;
+    line-height: 1;
+  }
+}
+
+.text-secondary {
+  color: $secondary-grey !important;
+}
+
+.text-custom {
+  color: $custom-blue !important;
+}

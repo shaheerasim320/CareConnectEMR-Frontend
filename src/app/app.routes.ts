@@ -9,7 +9,8 @@ export const routes: Routes = [
     { path: 'login', component: Login, canActivate: [guestGuard], title: 'Login' },
     {
         path: '', component: Shell, canActivate: [authGuard], children: [
-            { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard').then(m => m.Dashboard), canActivate: [authGuard], title: 'Dashboard' },
+            { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard').then(m => m.Dashboard), title: 'Dashboard' },
+            { path: 'patients', loadChildren: () => import('./features/patients/patients.routes').then(m => m.patientRoutes), title: 'Patients' },
         ]
     },
     { path: '**', redirectTo: 'login' }

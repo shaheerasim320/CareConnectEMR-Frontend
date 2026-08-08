@@ -1,0 +1,274 @@
+$custom-blue: #004573;
+
+.patient-list {
+    .bg-custom {
+        background-color: $custom-blue !important;
+
+        &:hover {
+            background-color: #00395f !important;
+        }
+    }
+
+    .directory-card {
+        background: #fff;
+        border: 1px solid #e8eef5;
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+
+    .directory-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid #eef2f6;
+        flex-wrap: wrap;
+    }
+
+    .directory-heading {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+
+        &__icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            display: grid;
+            place-items: center;
+            border-radius: .75rem;
+            color: $custom-blue;
+        }
+
+        h5 {
+            margin: 0;
+            font-weight: 700;
+            color: #19324d;
+        }
+    }
+
+    .directory-filters {
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        flex-wrap: wrap;
+    }
+
+    .search-wrapper {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        width: min(100%, 13rem);
+        height: 2.5rem;
+        padding: 0 .75rem;
+        border: 1px solid #d8e1eb;
+        border-radius: .6rem;
+        background: #fff;
+        transition: border-color .15s ease, box-shadow .15s ease;
+        flex-shrink: 1;
+
+        .search-icon {
+            font-size: 1.1rem;
+            width: auto;
+            height: auto;
+            flex-shrink: 0;
+            color: #9baab8;
+        }
+
+        input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: .875rem;
+            color: #243b53;
+            background: transparent;
+
+            &::placeholder {
+                color: #9baab8;
+            }
+        }
+
+        &:focus-within {
+            border-color: $custom-blue;
+            box-shadow: 0 0 0 3px rgb(0 69 115 / 12%);
+        }
+    }
+
+    .search-btn {
+        display: grid;
+        place-items: center;
+        width: 2rem;
+        height: 2.5rem;
+        border: none;
+        background: $custom-blue;
+        color: #fff;
+        border-radius: .6rem;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: background .15s ease;
+
+        mat-icon {
+            font-size: 1.1rem;
+            width: auto;
+            height: auto;
+        }
+
+        &:hover {
+            background: #00395f;
+        }
+
+        &:disabled {
+            background: #d8e1eb;
+            color: #9baab8;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+    }
+
+    .status-select {
+        width: 9rem;
+        height: 2.5rem;
+        padding: 0 .65rem;
+        border: 1px solid #d8e1eb;
+        border-radius: .6rem;
+        background: #fff;
+        color: #243b53;
+        font-size: .875rem;
+        outline: none;
+        cursor: pointer;
+        transition: border-color .15s ease, box-shadow .15s ease;
+
+        &:focus {
+            border-color: $custom-blue;
+            box-shadow: 0 0 0 3px rgb(0 69 115 / 12%);
+        }
+    }
+
+    .filter-actions {
+        display: flex;
+        gap: 10px;
+
+        .clear-btn {
+            border: none;
+            background: none;
+            color: $custom-blue;
+            font-size: .8rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0 .25rem;
+            white-space: nowrap;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        .icon-btn {
+            display: grid;
+            place-items: center;
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: none;
+            color: #6b7a8c;
+            border-radius: .5rem;
+            cursor: pointer;
+            transition: background .15s ease, color .15s ease;
+
+            mat-icon {
+                font-size: 1.2rem;
+                width: auto;
+                height: auto;
+            }
+
+            &:hover {
+                background: #eef2f6;
+                color: #19324d;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            }
+        }
+    }
+
+    .active-filters-row {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .6rem 1.5rem;
+        border-bottom: 1px solid #eef2f6;
+        flex-wrap: wrap;
+    }
+
+    .active-filters-label {
+        font-size: .78rem;
+        font-weight: 600;
+        color: #6b7a8c;
+    }
+
+    .filter-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: .3rem;
+        padding: .3rem .6rem;
+        border-radius: 999px;
+        font-size: .78rem;
+        font-weight: 500;
+        color: $custom-blue;
+        background: #eaf4fa;
+        border: 1px solid #cfe6f4;
+        cursor: pointer;
+        transition: background .15s ease;
+
+        mat-icon {
+            font-size: .85rem;
+            width: auto;
+            height: auto;
+        }
+
+        &:hover {
+            background: #d6ecf7;
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        .directory-toolbar {
+            flex-direction: column;
+            align-items: stretch;
+            padding: 1rem;
+        }
+
+        .directory-filters {
+            flex-direction: column;
+            align-items: stretch;
+            gap: .5rem;
+        }
+
+        .search-wrapper {
+            width: 100%;
+        }
+
+        .status-select {
+            width: 100%;
+        }
+
+
+        .filter-actions {
+            gap: 2rem;
+
+            .search-btn {
+                flex: 1;
+            }
+
+            .icon-btn {
+                width: 2.5rem;
+                flex-shrink: 0;
+            }
+
+            .clear-btn {
+                align-self: flex-end;
+                padding-bottom: 10px;
+            }
+        }
+    }
+}

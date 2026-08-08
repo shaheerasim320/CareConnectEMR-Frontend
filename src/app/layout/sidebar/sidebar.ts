@@ -27,7 +27,12 @@ export class Sidebar {
     );
   });
 
+  onNavItemClick() {
+    this.layoutService.closeMobile();
+  }
+
   logout() {
+    this.layoutService.closeMobile();
     this.authService.logout().subscribe();
   }
 }

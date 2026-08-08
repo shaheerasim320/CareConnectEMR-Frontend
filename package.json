@@ -30,6 +30,7 @@
     "@angular/material": "^20.2.14",
     "@angular/platform-browser": "^20.2.0",
     "@angular/router": "^20.2.0",
+    "@tabler/icons-webfont": "^3.44.0",
     "apexcharts": "^5.10.6",
     "bootstrap": "^5.3.8",
     "ng-apexcharts": "^2.4.0",

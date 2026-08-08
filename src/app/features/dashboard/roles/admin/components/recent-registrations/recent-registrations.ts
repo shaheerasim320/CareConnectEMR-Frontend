@@ -1,4 +1,4 @@
-import { Component, computed, input, signal } from '@angular/core';
+import { Component, computed, effect, input, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { RecentPatient } from '../../../../models';
@@ -54,7 +54,7 @@ export class RecentRegistrations {
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
-    
+
     link.setAttribute('href', url);
     link.setAttribute('download', `Registrations_${new Date().toLocaleDateString()}.csv`);
     link.style.visibility = 'hidden';
@@ -66,5 +66,13 @@ export class RecentRegistrations {
   getInitials(name: string): string {
     if (!name) return '';
     return name.split(' ').map(part => part[0]).join('').toUpperCase();
+  }
+
+  constructor() {
+    effect(() => {
+      if (this.patients().length === 0) {
+        this.showSearch.set(false);
+      }
+    })
   }
 }

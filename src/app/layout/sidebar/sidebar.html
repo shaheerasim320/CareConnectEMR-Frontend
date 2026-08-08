@@ -2,7 +2,7 @@
     <ul class="nav flex-column">
         @for (item of visibleNavItems(); track item.route){
             <li class="nav-item">
-                <a [routerLink]="item.route" routerLinkActive="active-link" class="nav-link d-flex align-items-center gap-3 text-muted">
+                <a [routerLink]="item.route" routerLinkActive="active-link" class="nav-link d-flex align-items-center gap-3 text-muted" (click)="onNavItemClick()">
                     <mat-icon>{{ item.icon }}</mat-icon>
                     @if (!layoutService.isCollapsed()){
                         <span class="label">{{ item.label }}</span>

@@ -1,4 +1,4 @@
-import { Component, computed, input, signal } from '@angular/core';
+import { Component, computed, effect, input, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { AppointmentQueue } from '../../../../models';
 import { MatTableModule } from '@angular/material/table';
@@ -38,6 +38,14 @@ export class TodaysQueue {
   getInitials(name: string): string {
     if (!name) return '';
     return name.split(' ').map(part => part[0]).join('').toUpperCase();
+  }
+
+  constructor() {
+    effect(() => {
+      if (this.todaysQueue().length === 0) {
+        this.showSearch.set(false);
+      }
+    })
   }
 
 }

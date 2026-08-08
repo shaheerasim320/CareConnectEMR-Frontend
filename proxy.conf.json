@@ -1,6 +1,6 @@
 {
   "/bff": {
-    "target": "https://localhost:7024",
+    "target": "http://localhost:5107",
     "secure": false,
     "pathRewrite": {
       "^/bff": "/api"

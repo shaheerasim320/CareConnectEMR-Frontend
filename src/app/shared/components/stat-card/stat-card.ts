@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, computed, effect, input, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, input, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 
@@ -26,19 +26,6 @@ export class StatCard {
   constructor() {
     effect(() => {
       this.animate();
-      console.group(`📊 StatCard: ${this.label()}`);
-      console.table({
-        Label: this.label(),
-        Value: this.value(),
-        Icon: this.icon(),
-        TrendValue: this.trendValue(),
-        TrendType: this.trendType(),
-        TrendDirection: this.trendDirection(),
-        Comparison: this.comparison(),
-        Theme: this.theme(),
-        HasTrend: this.hasTrend()
-      });
-      console.groupEnd();
     });
   }
 

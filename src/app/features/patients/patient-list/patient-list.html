@@ -1,0 +1,104 @@
+<div class="patient-list container-fluid">
+    <div class="d-flex flex-column flex-lg-row justify-content-between 
+              align-items-lg-center mb-4 mb-lg-3">
+        <div>
+            <h4 class="fw-bold mb-0">Patients</h4>
+            <p class="mb-0 text-muted">Manage patient records and registrations</p>
+        </div>
+        @if (canCreatePatient()) {
+        <button class="btn bg-custom d-flex align-items-center gap-2 text-white px-3 py-2 rounded-3 mt-3 mt-lg-0">
+            <mat-icon class="fs-5 w-auto h-auto">add</mat-icon>
+            <span class="fw-medium fs-6">New patient</span>
+        </button>
+        }
+    </div>
+
+    <div class="row g-4 mb-4">
+        @if (patientService.isStatsLoading()) {
+        @for (i of [1,2,3]; track i; let idx = $index) {
+        <div [class]="idx === 0 ? 'col-12 col-lg-6' : 'col-12 col-lg-3'">
+            <app-summary-card-skeleton />
+        </div>
+        }
+        } @else {
+        @for (card of statCards(); track card.label; let idx = $index) {
+        <div [class]="idx === 0 ? 'col-12 col-lg-6' : 'col-12 col-lg-3'">
+            <app-summary-card [label]="card.label" [icon]="card.icon" [value]="card.value" />
+        </div>
+        }
+        }
+    </div>
+
+    <section class="directory-card" aria-labelledby="patient-directory-title">
+        <div class="directory-toolbar">
+            <div class="directory-heading">
+                <div class="directory-heading__icon"><mat-icon>groups</mat-icon></div>
+                <h5 id="patient-directory-title">Patient directory</h5>
+            </div>
+
+            <div class="directory-filters">
+                <div class="search-wrapper">
+                    <mat-icon class="search-icon">search</mat-icon>
+                    <input type="text" [formControl]="searchControl" placeholder="Name, MRN, phone or email" (keydown.enter)="applyFilters()" />
+                </div>
+
+                @if (isAdmin()) {
+                <select class="status-select" [value]="selectedStatus()"
+                    (change)="onStatusChange($any($event.target).value)">
+                    <option value="All">All patients</option>
+                    <option value="Active">Active</option>
+                    <option value="Deactivated">Deactivated</option>
+                </select>
+                }
+
+                <div class="filter-actions">
+                    <button type="button" class="search-btn" (click)="applyFilters()" title="Search"
+                        [disabled]="!canSearch()">
+                        <mat-icon>search</mat-icon>
+                    </button>
+
+                    @if (activeFilters().length) {
+                    <button type="button" class="clear-btn" (click)="clearFilters()">
+                        Clear
+                    </button>
+                    }
+
+                    @if (isAdmin()) {
+                    <button type="button" class="icon-btn border border-1 rounded-3" title="Export as CSV">
+                        <mat-icon>download</mat-icon>
+                    </button>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @if (activeFilters().length) {
+        <div class="active-filters-row">
+            <span class="active-filters-label">Active filters:</span>
+            @for (filter of activeFilters(); track filter) {
+            <button type="button" class="filter-chip" (click)="clearFilters()">
+                {{ filter }} <mat-icon>close</mat-icon>
+            </button>
+            }
+        </div>
+        }
+
+        @if (patientService.isLoading()) {
+        <app-patients-table-skeleton />
+        } @else {
+        <app-patients-table [patients]="patientService.patients()?.items ?? []"
+            [totalCount]="patientService.patients()?.totalCount ?? 0"
+            [page]="patientService.patients()?.page ?? currentPage()"
+            [pageSize]="patientService.patients()?.pageSize ?? currentPageSize()" [canManageStatus]="isAdmin()"
+            (pageChange)="onPageChange($event)" (pageSizeChange)="onPageSizeChange($event)"
+            (statusChange)="onPatientStatusChange($event)" />
+        }
+
+    </section>
+
+    @if (dialogConfig(); as config) {
+    <app-confirm-dialog [config]="config" (confirmed)="confirmPatientStatusChange()"
+        (cancelled)="pendingStatusPatient.set(null)" />
+    }
+
+</div>
