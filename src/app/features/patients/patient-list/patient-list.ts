@@ -33,6 +33,7 @@ export class PatientList implements OnInit {
   private readonly router = inject(Router);
 
   readonly searchControl = new FormControl('');
+  readonly searchValue = signal('');
   readonly statusFilter = signal<PatientStatus | 'All'>('All');
   readonly selectedStatus = signal<PatientStatus | 'All'>('All');
   readonly currentPage = signal(1);
@@ -70,6 +71,7 @@ export class PatientList implements OnInit {
 
   ngOnInit(): void {
     this.patientService.loadStats().pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
+    this.searchControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(val => this.searchValue.set(val ?? ''));
 
     this.route.queryParamMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
       const page = this.toPositiveInt(params.get('page'), 1);
@@ -81,6 +83,7 @@ export class PatientList implements OnInit {
       this.currentPage.set(page);
       this.currentPageSize.set(pageSize);
       this.searchControl.setValue(search, { emitEvent: false });
+      this.searchValue.set(search);
       this.statusFilter.set(status);
       this.selectedStatus.set(status);
       this.loadPatients(page);
@@ -99,6 +102,7 @@ export class PatientList implements OnInit {
 
   clearFilters(): void {
     this.searchControl.setValue('', { emitEvent: false });
+    this.searchValue.set('');
     this.updateListingUrl(1, this.currentPageSize(), 'All');
   }
 
@@ -188,6 +192,10 @@ export class PatientList implements OnInit {
   });
 
   readonly canSearch = computed(() =>
-    !!(this.searchControl.value?.trim()) || this.selectedStatus() !== 'All'
+    !!(this.searchValue().trim()) || this.selectedStatus() !== 'All'
+  );
+
+  readonly hasActiveFilters = computed(() =>
+    !!(this.searchValue().trim()) || (this.isAdmin() && this.statusFilter() !== 'All')
   );
 }

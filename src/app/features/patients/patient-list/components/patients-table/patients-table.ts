@@ -22,7 +22,7 @@ export class PatientsTable {
 
   readonly rangeLabel = computed(() => {
     const total = this.totalCount();
-    if (total === 0) return 'No patients found';
+    if (total === 0) return '';
     const first = (this.page() - 1) * this.pageSize() + 1;
     const last = Math.min(first + this.patients().length - 1, total);
     return `Showing ${first}–${last} of ${total}`;

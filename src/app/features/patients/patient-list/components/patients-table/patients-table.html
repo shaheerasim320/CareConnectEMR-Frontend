@@ -75,16 +75,17 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-                [class.deactivated-row]="!isActive(row.status)"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.deactivated-row]="!isActive(row.status)"></tr>
         </table>
+
+        @if (patients().length === 0) {
+        <div class="empty-state">
+            <mat-icon>person_search</mat-icon>
+            <h6>No patients found</h6>
+            <p>Try changing the search or filters.</p>
+        </div>
+        }
     </div>
-    @if (patients().length === 0) {
-    <div class="empty-state"><mat-icon>person_search</mat-icon>
-        <h6>No patients found</h6>
-        <p>Try changing the search or filters.</p>
-    </div>
-    }
     <div class="mobile-list d-md-none">
         @for (pat of patients(); track pat.id) {
         <article class="patient-row" [class.patient-row--inactive]="!isActive(pat.status)">
