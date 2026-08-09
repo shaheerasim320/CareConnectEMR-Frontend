@@ -30,6 +30,12 @@
                 opacity: 0.6;
             }
         }
+
+        h6{
+            @media(max-width:768px){
+                font-size: 0.875rem;
+            }
+        }
     }
 
     .text-blue {
@@ -52,7 +58,7 @@
                 padding-left: 1.5rem;
             }
 
-            &:nth-child(2){
+            &:nth-child(2) {
                 padding-left: 1.5rem;
             }
         }
@@ -101,5 +107,60 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+
+        .patient-mobile-row {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            padding: .75rem 1.25rem;
+            border-bottom: 1px solid #f1f4f8;
+            transition: background .15s ease;
+            cursor: pointer;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &:hover {
+                background: #f8fafc;
+            }
+
+            .patient-mobile-info {
+                display: flex;
+                flex-direction: column;
+                gap: .2rem;
+                flex: 1;
+                min-width: 0;
+
+                .patient-mobile-top {
+                    display: flex;
+                    align-items: baseline;
+                    justify-content: space-between;
+                    gap: .5rem;
+
+                    .patient-mobile-name {
+                        font-weight: 600;
+                        font-size: .875rem;
+                        color: #19324d;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+
+                    .patient-mobile-mrn {
+                        font-size: .75rem;
+                        color: #9baab8;
+                        font-family: monospace;
+                        white-space: nowrap;
+                        flex-shrink: 0;
+                    }
+                }
+
+                .patient-mobile-meta {
+                    font-size: .75rem;
+                    color: #6b7a8c;
+                }
+            }
+        }
     }
 }

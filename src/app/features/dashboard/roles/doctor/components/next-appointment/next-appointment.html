@@ -1,60 +1,83 @@
-<div class="widget-card shadow-sm d-flex flex-column h-100">
-  <div class="card-header d-flex align-items-center">
-    <div class="d-flex gap-2 align-items-center text-blue">
-      <mat-icon>event_upcoming</mat-icon>
-      <h6 class="fw-bold mb-0">Next Appointment</h6>
+<div class="next-appointment-card shadow-sm">
+  @if (data()) {
+    <!-- Header -->
+    <div class="card-header">
+      <div class="card-heading">
+        <mat-icon class="heading-icon">calendar_today</mat-icon>
+        <h6>Next Appointment</h6>
+      </div>
     </div>
-    
-    @if (data()) {
-      <span class="badge rounded-pill status-badge ms-auto" [ngClass]="'status-' + data()!.status.toLowerCase()">
-        {{ data()!.status }}
+
+    <!-- Date + Time + Status -->
+    <div class="datetime-section">
+      <p class="datetime-line">
+        <span class="day-label">{{ getDayLabel(data()!.startTime) }}</span>
+        <span class="separator">·</span>
+        <span class="date-text">{{ data()!.startTime | date:'MMM d, yyyy' }}</span>
+        <span class="separator">·</span>
+        <span class="date-text">{{ data()!.startTime | date:'h:mm' }} – {{ data()!.endTime | date:'h:mm a' }}</span>
+      </p>
+      <span class="status-badge" [ngClass]="'status-' + data()!.status.toLowerCase()">
+        <span class="status-dot"></span>
+        {{ getStatusLabel(data()!.status) }}
       </span>
-    }
-  </div>
+    </div>
 
-  <div class="card-body p-4 d-flex flex-column h-100">
-    @if (data()) {
-      <div class="d-flex align-items-center mb-4">
-        <div class="avatar-circle flex-shrink-0">
-          <mat-icon>person</mat-icon>
-        </div>
-        <div class="ms-3">
-          <h6 class="fw-bold mb-0 text-dark">{{ data()!.patientName }}</h6>
-          <p class="text-muted small mb-0">{{ data()!.patientMRN }}</p>
-        </div>
+    <div class="divider"></div>
+
+    <!-- Patient Row -->
+    <div class="patient-row" [routerLink]="['/patients', data()!.id]">
+      <div class="avatar-initials">{{ getInitials(data()!.patientName) }}</div>
+      <div class="patient-info">
+        <span class="patient-name">{{ data()!.patientName }}</span>
+        <span class="patient-mrn">{{ data()!.patientMRN }}</span>
       </div>
+      <mat-icon class="nav-arrow">chevron_right</mat-icon>
+    </div>
 
-      <div class="time-box p-3 rounded-4 mb-4">
-        <div class="d-flex align-items-center gap-2 text-blue">
-          <mat-icon class="time-icon">schedule</mat-icon>
-          <span class="fw-bold small">{{ data()!.startTime | date:'shortTime' }} - {{ data()!.endTime | date:'shortTime' }}</span>
-        </div>
-      </div>
+    <div class="divider"></div>
 
-      <div class="mb-4 flex-grow-1">
-        <p class="text-muted text-uppercase fw-bold x-small letter-spacing mb-2">Reason for Visit</p>
-        <p class="small text-secondary lh-base">
-          {{ data()!.reason || 'General consultation.' }}
+    <!-- Reason -->
+    <div class="reason-section">
+      <span class="reason-label">REASON FOR VISIT</span>
+      <p class="reason-value">{{ data()!.reason || 'Not specified' }}</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Actions -->
+    <div class="action-section">
+      @if (data()!.status === 'CheckedIn') {
+        <button class="btn-complete" (click)="onComplete()">
+          Complete Appointment
+        </button>
+        <button class="btn-icon" title="Clinical Notes" (click)="onNotes()">
+          <mat-icon>edit_note</mat-icon>
+        </button>
+      } @else if (data()!.status === 'Scheduled') {
+        <button class="btn-notes" (click)="onNotes()">
+          <mat-icon>edit_note</mat-icon> Prep Notes
+        </button>
+      } @else {
+        <p class="completed-label">
+          @if (data()!.status === 'Completed') { Completed }
+          @else { Cancelled }
         </p>
+      }
+    </div>
+  } @else {
+    <!-- Empty state -->
+    <div class="card-header">
+      <div class="card-heading">
+        <mat-icon class="heading-icon">calendar_today</mat-icon>
+        <h6>Next Appointment</h6>
       </div>
-
-      <hr class="opacity-5 mb-4">
-
-      <div class="d-flex gap-2 mt-auto">
-        <button class="btn btn-primary flex-grow-1 py-2 rounded-3 fw-bold small">
-          View Patient File
-        </button>
-        <button class="btn btn-outline-light border text-dark py-2 px-3 rounded-3">
-          <mat-icon class="fs-5">edit_note</mat-icon>
-        </button>
+    </div>
+    <div class="empty-state">
+      <div class="empty-icon-bg">
+        <mat-icon>event_busy</mat-icon>
       </div>
-    } @else {
-      <div class="d-flex flex-column align-items-center justify-content-center flex-grow-1 py-5">
-        <div class="empty-icon-bg mb-3">
-          <mat-icon class="text-muted opacity-25">event_busy</mat-icon>
-        </div>
-        <p class="text-muted small text-center mb-0">No upcoming appointments<br>for the rest of the day.</p>
-      </div>
-    }
-  </div>
+      <p class="empty-text">No upcoming appointments<br>for the rest of the day.</p>
+    </div>
+  }
 </div>

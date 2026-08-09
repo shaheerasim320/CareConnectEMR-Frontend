@@ -1,5 +1,11 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
 .widget-card {
     display: flex;
+    flex: 1;
     flex-direction: column;
     background: #fff;
     border-radius: 16px;

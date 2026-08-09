@@ -14,27 +14,27 @@
         @for (stat of statsArray(); track stat.label) {
         <div class="col-12 col-md-6 col-lg-4">
             <app-stat-card [label]="stat.label" [value]="stat.count" [icon]="stat.icon" [trendValue]="stat.trendValue"
-                [trendType]="stat.trendType" [trendDirection]="stat.trendDirection" [comparison]="stat.trendComparison" [theme]="stat.theme" />
+                [trendType]="stat.trendType" [trendDirection]="stat.trendDirection" [comparison]="stat.trendComparison"
+                [theme]="stat.theme" />
         </div>
         }
         }
     </div>
 
-    <div class="row g-4 mt-2">
-        <div class="col-12 col-lg-8">
+    <div class="row g-4 mt-2 align-items-stretch">
+        <div class="col-12 col-lg-8 d-flex">
             @if (dashboardService.isLoading()) {
-            <app-todays-schedule-skeleton/>
+            <app-todays-schedule-skeleton class="w-100" />
             } @else {
-                <app-todays-schedule [todaysSchedule]="dashboardService.data()?.todaySchedule ?? []"/>
+            <app-todays-schedule class="w-100" [todaysSchedule]="dashboardService.data()?.todaySchedule ?? []" />
             }
-
         </div>
 
-        <div class="col-12 col-lg-4">
+        <div class="col-12 col-lg-4 d-flex">
             @if (dashboardService.isLoading()) {
-                <app-next-appointment-skeleton />
+            <app-next-appointment-skeleton class="w-100" />
             } @else {
-                <app-next-appointment [data]="dashboardService.data()?.nextAppointment ?? null" />
+            <app-next-appointment class="w-100" [data]="dashboardService.data()?.nextAppointment ?? null" />
             }
         </div>
     </div>

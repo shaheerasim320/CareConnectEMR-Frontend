@@ -1,129 +1,299 @@
-.widget-card {
-    background: #fff;
-    border-radius: 16px;
-    border: 1px solid #edf2f7;
+:host {
+  display: flex;
+  flex-direction: column;
+}
 
-    .card-header {
-        background: transparent;
-        border-bottom: 1px solid #f1f4f8;
-        padding: 1.25rem 1.5rem;
+.next-appointment-card {
+  background: #fff;
+  border: 1px solid #e8eef5;
+  border-radius: .75rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  
+
+  .card-header {
+    padding: 1.25rem 1.25rem 0;
+
+    .card-heading {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+
+      .heading-icon {
+        font-size: 1.1rem;
+        width: auto;
+        height: auto;
+        color: #004573;
+      }
+
+      h6 {
+        margin: 0;
+        font-weight: 700;
+        font-size: .95rem;
+        color: #19324d;
+      }
+    }
+  }
+
+  .datetime-section {
+    padding: .75rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+
+    .datetime-line {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      flex-wrap: wrap;
+
+      .day-label {
+        font-weight: 700;
+        font-size: .875rem;
+        color: #004573;
+      }
+
+      .separator {
+        color: #d1d5db;
+        font-size: .875rem;
+      }
+
+      .date-text {
+        font-size: .8rem;
+        color: #6b7a8c;
+      }
     }
 
-    .text-blue {
-        color: #11438F;
-    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      padding: .2rem .6rem;
+      border-radius: 999px;
+      font-size: .75rem;
+      font-weight: 500;
+      width: fit-content;
 
-    .x-small {
-        font-size: 0.7rem;
-    }
-
-    .letter-spacing {
-        letter-spacing: 0.8px;
-    }
-
-    .avatar-circle {
-        width: 48px;
-        height: 48px;
-        background: #f0f4f8;
+      .status-dot {
+        width: 6px;
+        height: 6px;
         border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #a0aec0;
+        flex-shrink: 0;
+      }
+
+      &.status-scheduled {
+        background: #eff6ff;
+        color: #2563eb;
+        border: 1px solid #bfdbfe;
+        .status-dot { background: #2563eb; }
+      }
+
+      &.status-checkedin {
+        background: #f0fdf4;
+        color: #16a34a;
+        border: 1px solid #bbf7d0;
+        .status-dot { background: #16a34a; }
+      }
+
+      &.status-completed {
+        background: #f9fafb;
+        color: #6b7280;
+        border: 1px solid #e5e7eb;
+        .status-dot { background: #6b7280; }
+      }
+
+      &.status-cancelled {
+        background: #fef2f2;
+        color: #dc2626;
+        border: 1px solid #fecaca;
+        .status-dot { background: #dc2626; }
+      }
+    }
+  }
+
+  .divider {
+    height: 1px;
+    background: #e8eef5;
+    margin: 0;
+  }
+
+  .patient-row {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .15s ease;
+
+    &:hover {
+      background: #f4f7fa;
+
+      .patient-name { text-decoration: underline; }
     }
 
-    .time-box {
-        background-color: #f5f9ff;
-        border: 1px solid #eef4fb;
-
-        .time-icon {
-            font-size: 18px;
-            width: 18px;
-            height: 18px;
-        }
-
-        .dot-indicator {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-        }
-
-        // Status-based coloring
-        .status-checkedin {
-            .status-label {
-                color: #10b981;
-            }
-
-            .dot-indicator {
-                background-color: #10b981;
-            }
-        }
-
-        .status-scheduled {
-            .status-label {
-                color: #6b7280;
-            }
-
-            .dot-indicator {
-                background-color: #6b7280;
-            }
-        }
-
-        .status-confirmed {
-            .status-label {
-                color: #3b82f6;
-            }
-
-            .dot-indicator {
-                background-color: #3b82f6;
-            }
-        }
-
-        .status-cancelled {
-            .status-label {
-                color: #ef4444;
-            }
-
-            .dot-indicator {
-                background-color: #ef4444;
-            }
-        }
+    .avatar-initials {
+      width: 34px;
+      height: 34px;
+      background: #f0f4f8;
+      color: #11438f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 500;
+      flex-shrink: 0;
     }
 
-    .btn-primary {
-        background-color: #1a4f8b;
-        border: none;
-        transition: opacity 0.2s;
+    .patient-info {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
 
-        &:hover {
-            opacity: 0.9;
-        }
+      .patient-name {
+        font-weight: 600;
+        font-size: .875rem;
+        color: #19324d;
+      }
+
+      .patient-mrn {
+        font-size: .75rem;
+        color: #6b7a8c;
+        font-family: monospace;
+      }
     }
 
-    .btn-outline-light {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #fff;
-
-        &:hover {
-            background: #f8fafc;
-        }
+    .nav-arrow {
+      font-size: 1.1rem;
+      width: auto;
+      height: auto;
+      color: #9baab8;
     }
+  }
+
+  .reason-section {
+    padding: 1rem 1.25rem;
+
+    .reason-label {
+      display: block;
+      font-size: .65rem;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: #9baab8;
+      font-weight: 600;
+    }
+
+    .reason-value {
+      margin: .25rem 0 0;
+      font-size: .875rem;
+      color: #19324d;
+    }
+  }
+
+  .action-section {
+    padding: 1rem 1.25rem;
+    display: flex;
+    gap: .5rem;
+
+    .btn-complete {
+      flex: 1;
+      height: 40px;
+      background: #004573;
+      color: #fff;
+      border: none;
+      border-radius: .5rem;
+      font-weight: 600;
+      font-size: .82rem;
+      cursor: pointer;
+      transition: background .15s ease;
+
+      &:hover { background: #00395f; }
+    }
+
+    .btn-notes {
+      flex: 1;
+      height: 40px;
+      background: #fff;
+      color: #19324d;
+      border: 1px solid #d8e1eb;
+      border-radius: .5rem;
+      font-weight: 600;
+      font-size: .82rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      transition: background .15s ease;
+
+      mat-icon {
+        font-size: 1rem;
+        width: auto;
+        height: auto;
+      }
+
+      &:hover { background: #f4f7fa; }
+    }
+
+    .btn-icon {
+      width: 40px;
+      height: 40px;
+      background: #fff;
+      border: 1px solid #d8e1eb;
+      border-radius: .5rem;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      color: #6b7a8c;
+      transition: background .15s ease;
+      flex-shrink: 0;
+
+      mat-icon {
+        font-size: 1.2rem;
+        width: auto;
+        height: auto;
+      }
+
+      &:hover { background: #f4f7fa; }
+    }
+
+    .completed-label {
+      margin: 0;
+      font-size: .8rem;
+      color: #9baab8;
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.25rem;
+    flex: 1;
 
     .empty-icon-bg {
-        width: 64px;
-        height: 64px;
-        background: #f8fafc;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        mat-icon {
-            font-size: 32px;
-            width: 32px;
-            height: 32px;
-        }
+      mat-icon {
+        font-size: 2.25rem;
+        width: auto;
+        height: auto;
+        color: #9baab8;
+        opacity: .4;
+      }
     }
+
+    .empty-text {
+      margin: .75rem 0 0;
+      font-size: .82rem;
+      color: #6b7a8c;
+      text-align: center;
+      line-height: 1.5;
+    }
+  }
 }

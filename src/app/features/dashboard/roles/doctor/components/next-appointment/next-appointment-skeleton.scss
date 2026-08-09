@@ -1,53 +1,86 @@
-.skeleton-wrapper {
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skeleton-card {
   background: #fff;
-  border-radius: 16px;
+  border: 1px solid #e8eef5;
+  border-radius: .75rem;
+  overflow: hidden;
 
-  .skeleton {
-    background: #f0f4f8;
-    border-radius: 4px;
-    position: relative;
-    overflow: hidden;
+  .skel {
+    background: linear-gradient(90deg, #f0f4f8 25%, #e8eef5 50%, #f0f4f8 75%);
+    background-size: 400px 100%;
+    animation: shimmer 1.4s infinite linear;
+    border-radius: .375rem;
+  }
 
-    &.shimmer::after {
-      content: "";
-      position: absolute;
-      top: 0; right: 0; bottom: 0; left: 0;
-      transform: translateX(-100%);
-      background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0) 0,
-        rgba(255, 255, 255, 0.6) 50%,
-        rgba(255, 255, 255, 0) 100%
-      );
-      animation: shimmer 2s infinite;
+  .divider {
+    height: 1px;
+    background: #e8eef5;
+  }
+
+  .skeleton-header {
+    padding: 1.25rem 1.25rem 0;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    .skel-icon { width: 20px; height: 20px; border-radius: 4px; }
+    .skel-title { width: 130px; height: 16px; }
+  }
+
+  .skeleton-datetime {
+    padding: .75rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    .skel-line-long { width: 200px; height: 13px; }
+    .skel-badge { width: 80px; height: 22px; border-radius: 999px; }
+  }
+
+  .skeleton-patient {
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+
+    .skel-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .skeleton-patient-info {
+      display: flex;
+      flex-direction: column;
+      gap: .35rem;
+      flex: 1;
+
+      .skel-name { width: 120px; height: 14px; }
+      .skel-mrn { width: 70px; height: 12px; }
     }
   }
 
-  // Dimensions matching the Next Appointment card
-  .icon-placeholder { width: 24px; height: 24px; border-radius: 6px; }
-  .header-title { width: 120px; height: 18px; }
-  .badge-pill { width: 70px; height: 22px; border-radius: 15px; }
-  
-  .avatar-circle { width: 48px; height: 48px; border-radius: 50%; }
-  
-  .time-box-placeholder { 
-    width: 100%; 
-    height: 60px; 
-    border-radius: 12px; 
+  .skeleton-reason {
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+
+    .skel-label { width: 100px; height: 10px; }
+    .skel-value { width: 140px; height: 14px; }
   }
 
-  .label { width: 100px; height: 10px; }
-  .text-line { height: 12px; border-radius: 2px; }
+  .skeleton-actions {
+    padding: 1rem 1.25rem;
+    display: flex;
+    gap: .5rem;
 
-  .btn-main { flex-grow: 1; height: 40px; border-radius: 8px; }
-  .btn-square { width: 45px; height: 40px; border-radius: 8px; }
-
-  .card-header {
-    padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid #f1f4f8;
+    .skel-btn-primary { flex: 1; height: 40px; border-radius: .5rem; }
+    .skel-btn-icon { width: 40px; height: 40px; border-radius: .5rem; flex-shrink: 0; }
   }
-}
-
-@keyframes shimmer {
-  100% { transform: translateX(100%); }
 }
