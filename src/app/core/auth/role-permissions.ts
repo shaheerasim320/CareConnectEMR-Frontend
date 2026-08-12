@@ -7,7 +7,9 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
 
     PERMISSIONS.ViewPatients,
     PERMISSIONS.CreatePatient,
-    PERMISSIONS.UpdatePatient,
+    PERMISSIONS.UpdatePatientIdentity,
+    PERMISSIONS.UpdatePatientContact,
+    PERMISSIONS.UpdatePatientClinical,
     PERMISSIONS.DeletePatient,
 
     PERMISSIONS.ViewAppointments,
@@ -24,7 +26,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     PERMISSIONS.ViewDashboard,
 
     PERMISSIONS.ViewPatients,
-    PERMISSIONS.UpdatePatient,
+    PERMISSIONS.UpdatePatientClinical,
 
     PERMISSIONS.ViewAppointments,
     PERMISSIONS.UpdateAppointmentStatus,
@@ -36,6 +38,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
 
     PERMISSIONS.ViewPatients,
     PERMISSIONS.CreatePatient,
+    PERMISSIONS.UpdatePatientIdentity,
+    PERMISSIONS.UpdatePatientContact,
 
     PERMISSIONS.ViewAppointments,
     PERMISSIONS.BookAppointment,

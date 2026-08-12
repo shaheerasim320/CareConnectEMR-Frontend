@@ -3,7 +3,9 @@ export const PERMISSIONS = {
 
     ViewPatients: 'patients:view',
     CreatePatient: 'patients:create',
-    UpdatePatient: 'patients:update',
+    UpdatePatientIdentity: 'patients:update-identity',
+    UpdatePatientContact: 'patients:update-contact',
+    UpdatePatientClinical: 'patients:update-clinical',
     DeletePatient: 'patients:delete',
 
     ViewAppointments: 'appointments:view',

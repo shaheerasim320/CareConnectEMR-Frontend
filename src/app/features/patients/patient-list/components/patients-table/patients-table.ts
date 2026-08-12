@@ -25,7 +25,7 @@ export class PatientsTable {
     if (total === 0) return '';
     const first = (this.page() - 1) * this.pageSize() + 1;
     const last = Math.min(first + this.patients().length - 1, total);
-    return `Showing ${first}–${last} of ${total}`;
+    return `Showing ${first}-${last} of ${total}`;
   });
 
   readonly totalPages = computed(() => Math.max(1, Math.ceil(this.totalCount() / this.pageSize())));
