@@ -19,6 +19,7 @@ export class PatientsTable {
   readonly pageChange = output<number>();
   readonly pageSizeChange = output<number>();
   readonly statusChange = output<Patient>();
+  readonly viewPatient = output<Patient>();
 
   readonly rangeLabel = computed(() => {
     const total = this.totalCount();

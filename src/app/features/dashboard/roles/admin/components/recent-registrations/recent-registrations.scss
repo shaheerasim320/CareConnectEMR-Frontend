@@ -31,8 +31,8 @@
             }
         }
 
-        h6{
-            @media(max-width:768px){
+        h6 {
+            @media(max-width:768px) {
                 font-size: 0.875rem;
             }
         }
@@ -107,13 +107,17 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+        gap: .625rem;
+        padding: .875rem 1rem;
 
         .patient-mobile-row {
             display: flex;
             align-items: center;
-            gap: .75rem;
-            padding: .75rem 1.25rem;
-            border-bottom: 1px solid #f1f4f8;
+            gap: .875rem;
+            padding: .875rem 1rem;
+            background: #fff;
+            border: 1px solid #e8edf4;
+            border-radius: 12px;
             transition: background .15s ease;
             cursor: pointer;
 
@@ -132,33 +136,44 @@
                 flex: 1;
                 min-width: 0;
 
-                .patient-mobile-top {
-                    display: flex;
-                    align-items: baseline;
-                    justify-content: space-between;
-                    gap: .5rem;
-
-                    .patient-mobile-name {
-                        font-weight: 600;
-                        font-size: .875rem;
-                        color: #19324d;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                    }
-
-                    .patient-mobile-mrn {
-                        font-size: .75rem;
-                        color: #9baab8;
-                        font-family: monospace;
-                        white-space: nowrap;
-                        flex-shrink: 0;
-                    }
+                .patient-mobile-name {
+                    font-weight: 600;
+                    font-size: .875rem;
+                    color: #19324d;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
 
-                .patient-mobile-meta {
+                .patient-mobile-mrn {
                     font-size: .75rem;
-                    color: #6b7a8c;
+                    color: #9baab8;
+                    font-family: monospace;
+                    white-space: nowrap;
+                }
+            }
+
+            .patient-mobile-right {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: .25rem;
+                flex-shrink: 0;
+
+                .patient-mobile-gender {
+                    font-size: .7rem;
+                    font-weight: 500;
+                    color: #4a5568;
+                    background: #e9edf2;
+                    border-radius: 20px;
+                    padding: .15rem .6rem;
+                    white-space: nowrap;
+                }
+
+                .patient-mobile-date {
+                    font-size: .7rem;
+                    color: #9baab8;
+                    white-space: nowrap;
                 }
             }
         }

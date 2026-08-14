@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable, signal } from "@angular/core";
 import { environment } from "../../../../environments/environment";
-import { Patient, PatientListParams, PatientStats } from "../models";
+import { Patient, PatientAuditLog, PatientDetail, PatientListParams, PatientStats } from "../models";
 import { PagedResult } from "../../../core/api/paged-result";
 import { ApiResponse } from "../../../core/api/api-response";
 import { toHttpParams } from "../../../core/api/to-http-params";
@@ -14,8 +14,15 @@ export class PatientService {
 
     readonly stats = signal<PatientStats | null>(null);
     readonly isStatsLoading = signal(false);
+
     readonly patients = signal<PagedResult<Patient> | null>(null);
     readonly isLoading = signal(false);
+
+    readonly selectedPatient = signal<PatientDetail | null>(null);
+    readonly isPatientLoading = signal(false);
+
+    readonly auditLogs = signal<PatientAuditLog[]>([]);
+    readonly isAuditLogsLoading = signal(false);
 
     loadList(params: PatientListParams = {}) {
         this.isLoading.set(true);
@@ -28,6 +35,26 @@ export class PatientService {
                 }),
                 finalize(() => this.isLoading.set(false))
             );
+    }
+
+    getById(id: string) {
+        this.isPatientLoading.set(true);
+        this.selectedPatient.set(null);
+
+        return this.http.get<ApiResponse<PatientDetail>>(`${this.api}/view/${id}`).pipe(
+            tap(res => {
+                if (res.isSuccess && res.data) this.selectedPatient.set(res.data)
+            }),
+            finalize(() => this.isPatientLoading.set(false))
+        );
+    }
+
+    getAuditLogs(id: string) {
+        this.isAuditLogsLoading.set(true);
+        return this.http.get<ApiResponse<PatientAuditLog[]>>(`${this.api}/logs/${id}`).pipe(
+            tap(res => { if (res.isSuccess && res.data) this.auditLogs.set(res.data); }),
+            finalize(() => this.isAuditLogsLoading.set(false))
+        );
     }
 
     loadStats() {

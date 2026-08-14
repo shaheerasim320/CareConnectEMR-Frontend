@@ -42,7 +42,7 @@
                     <input type="text" [formControl]="searchControl" placeholder="Name, MRN, phone or email" (keydown.enter)="applyFilters()" />
                 </div>
 
-                @if (isAdmin()) {
+                @if (canManageStatus()) {
                 <select class="status-select" [value]="selectedStatus()"
                     (change)="onStatusChange($any($event.target).value)">
                     <option value="All">All patients</option>
@@ -63,7 +63,7 @@
                     </button>
                     }
 
-                    @if (isAdmin()) {
+                    @if (canExport()) {
                     <button type="button" class="icon-btn border border-1 rounded-3" title="Export as CSV">
                         <mat-icon>download</mat-icon>
                     </button>
@@ -89,9 +89,10 @@
         <app-patients-table [patients]="patientService.patients()?.items ?? []"
             [totalCount]="patientService.patients()?.totalCount ?? 0"
             [page]="patientService.patients()?.page ?? currentPage()"
-            [pageSize]="patientService.patients()?.pageSize ?? currentPageSize()" [canManageStatus]="isAdmin()"
+            [pageSize]="patientService.patients()?.pageSize ?? currentPageSize()" [canManageStatus]="canManageStatus()"
             (pageChange)="onPageChange($event)" (pageSizeChange)="onPageSizeChange($event)"
-            (statusChange)="onPatientStatusChange($event)" />
+            (statusChange)="onPatientStatusChange($event)"
+            (viewPatient)="viewPatient($event)" />
         }
 
     </section>

@@ -63,7 +63,7 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="['/patients', row.id]"></tr>
         </table>
         }
     </div>
@@ -78,15 +78,17 @@
         </div>
         } @else {
         @for (doc of filteredPatients(); track doc.id) {
-        <div class="patient-mobile-row">
+        <div class="patient-mobile-row" [routerLink]="['/patients', doc.id]">
             <div class="avatar-initials">{{ getInitials(doc.fullName) }}</div>
+
             <div class="patient-mobile-info">
-                <div class="patient-mobile-top">
-                    <span class="patient-mobile-name">{{ doc.fullName }}</span>
-                    <span class="patient-mobile-mrn">{{ doc.mrn }}</span>
-                </div>
-                <span class="patient-mobile-meta">{{ doc.gender }} · {{ doc.registeredAt | date:'M/d/yy, h:mm a'
-                    }}</span>
+                <span class="patient-mobile-name">{{ doc.fullName }}</span>
+                <span class="patient-mobile-mrn">{{ doc.mrn }}</span>
+            </div>
+
+            <div class="patient-mobile-right">
+                <span class="patient-mobile-gender">{{ doc.gender }}</span>
+                <span class="patient-mobile-date">{{ doc.registeredAt | date:'M/d/yy, h:mm a' }}</span>
             </div>
         </div>
         }

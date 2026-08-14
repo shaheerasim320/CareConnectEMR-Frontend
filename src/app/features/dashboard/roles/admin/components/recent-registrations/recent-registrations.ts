@@ -1,13 +1,14 @@
-import { Component, computed, effect, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { RecentPatient } from '../../../../models';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-recent-registrations',
-  imports: [MatIconModule, MatTableModule, CommonModule, FormsModule],
+  imports: [MatIconModule, MatTableModule, CommonModule, FormsModule, RouterLink],
   templateUrl: './recent-registrations.html',
   styleUrl: './recent-registrations.scss',
 })

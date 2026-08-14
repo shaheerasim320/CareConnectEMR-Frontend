@@ -4,5 +4,5 @@ import { PERMISSIONS } from "../../core/auth/permissions";
 
 export const patientRoutes: Routes = [
     { path: '', loadComponent: () => import('./patient-list/patient-list').then(m => m.PatientList), canActivate: [permissionGuard], data: { permission: PERMISSIONS.ViewPatients } },
-
+    { path: ':id', loadComponent: () =>  import('./patient-detail/patient-detail').then(m => m.PatientDetail), canActivate: [permissionGuard], data: { permission: PERMISSIONS.ViewPatientDetail } }
 ]

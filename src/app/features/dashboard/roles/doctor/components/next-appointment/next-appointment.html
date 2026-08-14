@@ -1,6 +1,5 @@
 <div class="next-appointment-card shadow-sm">
   @if (data()) {
-    <!-- Header -->
     <div class="card-header">
       <div class="card-heading">
         <mat-icon class="heading-icon">calendar_today</mat-icon>
@@ -8,14 +7,13 @@
       </div>
     </div>
 
-    <!-- Date + Time + Status -->
     <div class="datetime-section">
       <p class="datetime-line">
         <span class="day-label">{{ getDayLabel(data()!.startTime) }}</span>
         <span class="separator">·</span>
         <span class="date-text">{{ data()!.startTime | date:'MMM d, yyyy' }}</span>
         <span class="separator">·</span>
-        <span class="date-text">{{ data()!.startTime | date:'h:mm' }} – {{ data()!.endTime | date:'h:mm a' }}</span>
+        <span class="date-text">{{ data()!.startTime | date:'h:mm' }} - {{ data()!.endTime | date:'h:mm a' }}</span>
       </p>
       <span class="status-badge" [ngClass]="'status-' + data()!.status.toLowerCase()">
         <span class="status-dot"></span>
@@ -25,8 +23,7 @@
 
     <div class="divider"></div>
 
-    <!-- Patient Row -->
-    <div class="patient-row" [routerLink]="['/patients', data()!.id]">
+    <div class="patient-row" [routerLink]="['/patients', data()!.patientId]">
       <div class="avatar-initials">{{ getInitials(data()!.patientName) }}</div>
       <div class="patient-info">
         <span class="patient-name">{{ data()!.patientName }}</span>
@@ -37,7 +34,6 @@
 
     <div class="divider"></div>
 
-    <!-- Reason -->
     <div class="reason-section">
       <span class="reason-label">REASON FOR VISIT</span>
       <p class="reason-value">{{ data()!.reason || 'Not specified' }}</p>
@@ -45,7 +41,6 @@
 
     <div class="divider"></div>
 
-    <!-- Actions -->
     <div class="action-section">
       @if (data()!.status === 'CheckedIn') {
         <button class="btn-complete" (click)="onComplete()">
@@ -66,7 +61,6 @@
       }
     </div>
   } @else {
-    <!-- Empty state -->
     <div class="card-header">
       <div class="card-heading">
         <mat-icon class="heading-icon">calendar_today</mat-icon>

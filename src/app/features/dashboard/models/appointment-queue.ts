@@ -1,5 +1,6 @@
 export interface AppointmentQueue {
     id: string;
+    patientId: string;
     patientName: string;
     patientMRN: string;
     doctorName: string;

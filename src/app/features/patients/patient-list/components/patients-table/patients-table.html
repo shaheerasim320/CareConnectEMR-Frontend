@@ -54,11 +54,11 @@
                 <td mat-cell *matCellDef="let pat">
                     <div class="row-actions">
                         <button mat-icon-button class="action-button action-button--view" title="View patient"
-                            aria-label="View patient">
+                            aria-label="View patient" (click)="viewPatient.emit(pat); $event.stopPropagation()">
                             <mat-icon>visibility</mat-icon>
                         </button>
                         <button mat-icon-button class="action-button action-button--edit" title="Edit patient"
-                            aria-label="Edit patient">
+                            aria-label="Edit patient" (click)="$event.stopPropagation()">
                             <mat-icon>edit</mat-icon>
                         </button>
                         @if (canManageStatus()) {
@@ -66,7 +66,7 @@
                             [class.action-button--deactivate]="isActive(pat.status)"
                             [class.action-button--activate]="!isActive(pat.status)"
                             [title]="isActive(pat.status) ? 'Deactivate patient' : 'Activate patient'"
-                            (click)="statusChange.emit(pat)">
+                            (click)="statusChange.emit(pat); $event.stopPropagation()">
                             <mat-icon>{{ isActive(pat.status) ? 'person_off' : 'person_check' }}</mat-icon>
                         </button>
                         }
@@ -75,7 +75,7 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.deactivated-row]="!isActive(row.status)"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.deactivated-row]="!isActive(row.status)" (click)="viewPatient.emit(row)"></tr>
         </table>
 
         @if (patients().length === 0) {
@@ -88,7 +88,7 @@
     </div>
     <div class="mobile-list d-md-none">
         @for (pat of patients(); track pat.id) {
-        <article class="patient-row" [class.patient-row--inactive]="!isActive(pat.status)">
+        <article class="patient-row" [class.patient-row--inactive]="!isActive(pat.status)" (click)="viewPatient.emit(pat)">
             <div class="patient-row__header">
                 <div class="d-flex align-items-center gap-2">
                     <div class="avatar-initials">{{ getIntials(pat.fullName) }}</div>
@@ -111,15 +111,15 @@
             </div>
 
             <div class="patient-row__actions">
-                <button type="button" class="mobile-action">
+                <button type="button" class="mobile-action" (click)="viewPatient.emit(pat); $event.stopPropagation()">
                     <mat-icon>visibility</mat-icon> View
                 </button>
-                <button type="button" class="mobile-action">
+                <button type="button" class="mobile-action" (click)="$event.stopPropagation()">
                     <mat-icon>edit</mat-icon> Edit
                 </button>
                 @if (canManageStatus()) {
                 <button type="button" class="mobile-action" [class.mobile-action--deactivate]="isActive(pat.status)"
-                    [class.mobile-action--reactivate]="!isActive(pat.status)" (click)="statusChange.emit(pat)">
+                    [class.mobile-action--reactivate]="!isActive(pat.status)" (click)="statusChange.emit(pat); $event.stopPropagation()">
                     <mat-icon>{{ isActive(pat.status) ? 'person_off' : 'person_check' }}</mat-icon>
                     {{ isActive(pat.status) ? 'Deactivate' : 'Reactivate' }}
                 </button>

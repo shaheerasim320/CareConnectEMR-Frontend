@@ -1,0 +1,125 @@
+@keyframes shimmer {
+  to { background-position: -200% 0; }
+}
+
+$sk-base: #edf2f7;
+$sk-shine: #f7fafc;
+
+@mixin shimmer {
+  background: linear-gradient(90deg, $sk-base 25%, $sk-shine 50%, $sk-base 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s infinite;
+  border-radius: 0.35rem;
+}
+
+.sk-bar {
+  display: block;
+  @include shimmer;
+}
+
+.sk-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &__back    { width: 5rem;  height: 0.75rem; }
+  &__sep     { width: 0.5rem; height: 0.75rem; }
+  &__current { width: 4rem;  height: 0.75rem; }
+}
+
+.detail-skeleton__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border-color, #e8edf3);
+  border-radius: 0.75rem;
+}
+
+.sk-avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  @include shimmer;
+}
+
+.sk-header {
+  &__name   { width: 11rem; height: 1.1rem; }
+  &__mrn    { width: 5rem;  height: 0.8rem; }
+  &__age    { width: 3.5rem; height: 0.8rem; }
+  &__gender { width: 3rem;  height: 0.8rem; }
+  &__btn    { width: 7.5rem; height: 2.25rem; border-radius: 0.5rem; }
+}
+
+.sk-card {
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border-color, #e8edf3);
+  border-radius: 0.75rem;
+  overflow: hidden;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color, #e8edf3);
+  }
+
+  &__title { width: 9rem; height: 0.85rem; }
+
+  &__body {
+    padding: 1.25rem 1.5rem;
+  }
+}
+
+.sk-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.25rem;
+  @include shimmer;
+  flex-shrink: 0;
+}
+
+.sk-field {
+  &__label { width: 55%;  height: 0.6rem; }
+  &__value { width: 80%;  height: 0.85rem; }
+}
+
+.sk-blood-type {
+  width: 3rem;
+  height: 1.6rem;
+  border-radius: 0.4rem;
+}
+
+.sk-allergy-tag {
+  width: 4.5rem;
+  height: 1.5rem;
+  border-radius: 1rem;
+}
+
+.sk-activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem 1.5rem;
+  border-bottom: 1px solid var(--border-color, #e8edf3);
+
+  &:last-child { border-bottom: none; }
+}
+
+.sk-activity-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  @include shimmer;
+}
+
+.sk-activity {
+  &__label { width: 75%; height: 0.8rem; }
+  &__date  { width: 55%; height: 0.7rem; }
+}

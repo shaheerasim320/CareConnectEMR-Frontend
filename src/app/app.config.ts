@@ -1,5 +1,5 @@
 import { ApplicationConfig, inject, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter, TitleStrategy } from '@angular/router';
+import { provideRouter, TitleStrategy, withInMemoryScrolling } from '@angular/router';
 
 import { routes } from './app.routes';
 import { AppTitleStrategy } from './core/strategies/page-title';
@@ -11,7 +11,9 @@ import { catchError, firstValueFrom, of, timeout } from 'rxjs';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(routes, withInMemoryScrolling({
+      scrollPositionRestoration: 'top'
+    })),
     provideHttpClient(withInterceptors([authInterceptor])),
     { provide: TitleStrategy, useClass: AppTitleStrategy },
     provideAppInitializer(() => {

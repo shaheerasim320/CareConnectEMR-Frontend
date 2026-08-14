@@ -1,0 +1,116 @@
+<div class="detail-skeleton px-2">
+  <div class="sk-breadcrumb mb-3">
+    <span class="sk-bar sk-breadcrumb__back"></span>
+    <span class="sk-bar sk-breadcrumb__sep"></span>
+    <span class="sk-bar sk-breadcrumb__current"></span>
+  </div>
+  <div class="detail-skeleton__header mb-4">
+    <div class="d-flex align-items-center gap-3">
+      <div class="sk-avatar"></div>
+      <div class="d-flex flex-column gap-2">
+        <span class="sk-bar sk-header__name"></span>
+        <div class="d-flex align-items-center gap-2">
+          <span class="sk-bar sk-header__mrn"></span>
+          <span class="sk-bar sk-header__age"></span>
+          <span class="sk-bar sk-header__gender"></span>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex gap-2">
+      <span class="sk-bar sk-header__btn"></span>
+      <span class="sk-bar sk-header__btn"></span>
+    </div>
+  </div>
+  <div class="row g-4">
+    <div class="col-12 col-lg-8 d-flex flex-column gap-4">
+      <div class="sk-card">
+        <div class="sk-card__header">
+          <span class="sk-icon"></span>
+          <span class="sk-bar sk-card__title"></span>
+        </div>
+        <div class="sk-card__body">
+          <div class="row g-3">
+            @for (field of [1,2,3,4,5,6]; track field) {
+            <div class="col-6 d-flex flex-column gap-2">
+              <span class="sk-bar sk-field__label"></span>
+              <span class="sk-bar sk-field__value"></span>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="sk-card">
+        <div class="sk-card__header">
+          <span class="sk-icon"></span>
+          <span class="sk-bar sk-card__title"></span>
+        </div>
+        <div class="sk-card__body">
+          <div class="row g-3">
+            @for (field of [1,2]; track field) {
+            <div class="col-6 d-flex flex-column gap-2">
+              <span class="sk-bar sk-field__label"></span>
+              <span class="sk-bar sk-field__value"></span>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="sk-card">
+        <div class="sk-card__header">
+          <span class="sk-icon"></span>
+          <span class="sk-bar sk-card__title"></span>
+        </div>
+        <div class="sk-card__body">
+          <div class="row g-3">
+            @for (field of [1,2]; track field) {
+            <div class="col-6 d-flex flex-column gap-2">
+              <span class="sk-bar sk-field__label"></span>
+              <span class="sk-bar sk-field__value"></span>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-12 col-lg-4 d-flex flex-column gap-4">
+      <div class="sk-card">
+        <div class="sk-card__header">
+          <span class="sk-icon"></span>
+          <span class="sk-bar sk-card__title"></span>
+        </div>
+        <div class="sk-card__body d-flex flex-column gap-3">
+          <div class="d-flex flex-column gap-2">
+            <span class="sk-bar sk-field__label"></span>
+            <span class="sk-bar sk-blood-type"></span>
+          </div>
+          <div class="d-flex flex-column gap-2">
+            <span class="sk-bar sk-field__label"></span>
+            <div class="d-flex flex-wrap gap-2 mt-1">
+              @for (tag of [1,2,3]; track tag) {
+              <span class="sk-bar sk-allergy-tag"></span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sk-card">
+        <div class="sk-card__header">
+          <span class="sk-icon"></span>
+          <span class="sk-bar sk-card__title"></span>
+        </div>
+        <div class="sk-card__body d-flex flex-column gap-0">
+          @for (entry of [1,2,3,4]; track entry) {
+          <div class="sk-activity-item">
+            <span class="sk-activity-icon"></span>
+            <div class="d-flex flex-column gap-2 flex-grow-1">
+              <span class="sk-bar sk-activity__label"></span>
+              <span class="sk-bar sk-activity__date"></span>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

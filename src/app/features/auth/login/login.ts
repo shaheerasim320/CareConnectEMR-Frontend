@@ -30,28 +30,22 @@ export class Login {
   });
 
   onSubmit() {
-
+    if (this.loading) return;
     if (this.loginForm.invalid) {
       this.snackbar.warning('Please fill all fields');
       return;
     }
-
     this.loading = true;
-
     const data = this.loginForm.getRawValue();
-
     this.authService.login(data).subscribe({
       next: () => {
-
-        this.loading = false;
-
         const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';
-
-        this.router.navigateByUrl(returnUrl);
+        this.router.navigateByUrl(returnUrl).catch(() => {
+          this.loading = false;
+          this.snackbar.error('Unable to open the requested page');
+        });
       },
-
       error: (err) => {
-
         this.loading = false;
         if (err.status === 0) {
           this.snackbar.error('Cannot connect to the server');
@@ -62,5 +56,4 @@ export class Login {
     });
 
   }
-
 }

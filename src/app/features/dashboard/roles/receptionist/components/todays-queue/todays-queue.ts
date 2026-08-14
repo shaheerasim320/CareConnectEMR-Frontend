@@ -4,10 +4,11 @@ import { AppointmentQueue } from '../../../../models';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-todays-queue',
-  imports: [MatIconModule, MatTableModule, CommonModule, FormsModule],
+  imports: [MatIconModule, MatTableModule, CommonModule, FormsModule, RouterLink],
   templateUrl: './todays-queue.html',
   styleUrl: './todays-queue.scss',
 })

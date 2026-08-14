@@ -1,0 +1,276 @@
+<div class="patient-detail-page px-2 min-vh-100">
+    @if (invalidId()) {
+    <div class="invalid-state d-flex flex-column align-items-center justify-content-center">
+        <div class="invalid-state__icon mb-3">
+            <mat-icon>error_outline</mat-icon>
+        </div>
+        <h2 class="invalid-state__title">Invalid Patient</h2>
+        <p class="invalid-state__desc">No patient ID was provided or the ID is malformed.</p>
+        <a routerLink="/patients" class="btn btn-outline-primary btn-sm mt-2">
+            <mat-icon class="btn-icon">arrow_back</mat-icon>
+            Back to Patients
+        </a>
+    </div>
+    }
+    @else if (patientService.isPatientLoading()) {
+    <app-patient-detail-skeleton />
+    }
+    @else if (notFound()) {
+    <div class="invalid-state d-flex flex-column align-items-center justify-content-center">
+        <div class="invalid-state__icon mb-3">
+            <mat-icon>person_off</mat-icon>
+        </div>
+        <h2 class="invalid-state__title">Patient Not Found</h2>
+        <p class="invalid-state__desc">No record exists for the requested ID.</p>
+        <a routerLink="/patients" class="btn btn-outline-primary btn-sm mt-2">
+            <mat-icon class="btn-icon">arrow_back</mat-icon>
+            Back to Patients
+        </a>
+    </div>
+    }
+    @else if (patientService.selectedPatient(); as patient) {
+    <nav class="breadcrumb-nav mb-3">
+        <a routerLink="/patients" class="breadcrumb-nav__link">
+            <mat-icon class="breadcrumb-nav__arrow">arrow_back</mat-icon>
+            Patients
+        </a>
+        <span class="breadcrumb-nav__sep">/</span>
+        <span class="breadcrumb-nav__current">{{ patient.mrn }}</span>
+    </nav>
+
+    @if (patient.status === 'Deactivated') {
+    <div class="status-banner status-banner--deactivated mb-3">
+        <mat-icon class="status-banner__icon">warning_amber</mat-icon>
+        <div>
+            <div class="status-banner__title">Record Deactivated</div>
+            <div class="status-banner__desc">This patient record is currently deactivated. Certain actions may be
+                restricted.</div>
+        </div>
+    </div>
+    }
+    <div class="patient-header-card mb-4" [class.patient-header-card--deactivated]="patient.status === 'Deactivated'">
+        <div class="d-flex align-items-center gap-3">
+            <div class="patient-avatar">
+                {{ patient.firstName[0] }}{{ patient.lastName[0] }}
+            </div>
+            <div>
+                <h1 class="patient-header-card__name">{{ patient.firstName }} {{ patient.lastName }}</h1>
+                <div class="patient-header-card__meta">
+                    <span class="badge-mrn">{{ patient.mrn }}</span>
+                    <span class="meta-dot">•</span>
+                    <span>{{ patient.age }} years</span>
+                    <span class="meta-dot">•</span>
+                    <span>{{ patient.gender }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="patient-header-card__actions">
+            @if(canEditPatient()){
+            <button class="btn btn-action-edit" (click)="onEditPatient()">
+                <mat-icon class="btn-icon">edit</mat-icon>
+                Edit Patient
+            </button>
+            }
+            @if(canManageStatus()){
+            @if (patient.status === 'Active') {
+            <button class="btn btn-action-deactivate" (click)="onToggleStatus(patient)">
+                <mat-icon class="btn-icon">block</mat-icon>
+                Deactivate
+            </button>
+            } @else {
+            <button class="btn btn-action-activate" (click)="onToggleStatus(patient)">
+                <mat-icon class="btn-icon">check_circle</mat-icon>
+                Activate
+            </button>
+            }
+            }
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-8 d-flex flex-column gap-4">
+            <div class="detail-card">
+                <div class="detail-card__header">
+                    <mat-icon class="detail-card__icon">badge</mat-icon>
+                    <h2 class="detail-card__title">Personal Information</h2>
+                </div>
+                <div class="detail-card__body">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="field-label">FULL NAME</div>
+                            <div class="field-value">{{ patient.firstName }} {{ patient.lastName }}</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-label">MRN</div>
+                            <div class="field-value">{{ patient.mrn }}</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-label">AGE</div>
+                            <div class="field-value">{{ patient.age }} years</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-label">GENDER</div>
+                            <div class="field-value">{{ patient.gender }}</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-label">REGISTERED DATE</div>
+                            <div class="field-value">{{ patient.createdAt | date: 'MMM d, yyyy' }}</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-label">STATUS</div>
+                            <div class="field-value">
+                                <span class="status-badge" [class.status-badge--active]="patient.status === 'Active'"
+                                    [class.status-badge--deactivated]="patient.status === 'Deactivated'">
+                                    {{ patient.status }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-card">
+                <div class="detail-card__header">
+                    <mat-icon class="detail-card__icon">contact_page</mat-icon>
+                    <h2 class="detail-card__title">Contact Information</h2>
+                </div>
+                <div class="detail-card__body">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="field-label">PHONE NUMBER</div>
+                            <div class="field-value">
+                                @if (patient.phoneNumber) {
+                                {{ patient.phoneNumber }}
+                                } @else {
+                                <span class="field-empty">—</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-label">EMAIL ADDRESS</div>
+                            <div class="field-value">
+                                @if (patient.email) {
+                                {{ patient.email }}
+                                } @else {
+                                <span class="field-empty">—</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-card">
+                <div class="detail-card__header">
+                    <mat-icon class="detail-card__icon">emergency</mat-icon>
+                    <h2 class="detail-card__title">Emergency Contact</h2>
+                </div>
+                @if (patient.emergencyContactName || patient.emergencyContactNumber) {
+                <div class="detail-card__body">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="field-label">NAME</div>
+                            <div class="field-value">{{ patient.emergencyContactName }}</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="field-label">PHONE NUMBER</div>
+                            <div class="field-value">{{ patient.emergencyContactNumber }}</div>
+                        </div>
+                    </div>
+                </div>
+                } @else {
+                <div class="empty-state">
+                    <div class="empty-state__icon">
+                        <mat-icon>person_off</mat-icon>
+                    </div>
+                    <div class="empty-state__title">No Emergency Contact</div>
+                    <div class="empty-state__desc">Emergency contact information has not been provided for this patient.
+                    </div>
+                    @if(canUpdateContact()){
+                    <button class="btn btn-outline-secondary btn-sm mt-3" (click)="onAddEmergencyContact()">
+                        Add Contact
+                    </button>
+                    }
+                </div>
+                }
+            </div>
+        </div>
+        <div class="col-12 col-lg-4 d-flex flex-column gap-4">
+            <div class="detail-card">
+                <div class="detail-card__header">
+                    <mat-icon class="detail-card__icon">medical_information</mat-icon>
+                    <h2 class="detail-card__title">Clinical Overview</h2>
+                </div>
+                <div class="detail-card__body">
+                    <div class="mb-3">
+                        <div class="field-label">BLOOD TYPE</div>
+                        @if (patient.bloodType) {
+                        <span class="blood-type-badge">{{ patient.bloodType }}</span>
+                        } @else {
+                        <span class="field-empty">Not recorded</span>
+                        }
+                    </div>
+                    <div>
+                        <div class="field-label">ALLERGIES</div>
+                        @if (patient.allergies && patient.allergies.length > 0) {
+                        <div class="d-flex flex-wrap gap-2 mt-1">
+                            @for (allergy of patient.allergies; track allergy) {
+                            <span class="allergy-tag">{{ allergy }}</span>
+                            }
+                        </div>
+                        } @else {
+                        <span class="field-empty fst-italic">No known allergies</span>
+                        }
+                    </div>
+                </div>
+            </div>
+            @if(canViewAuditLogs()){
+            <div class="detail-card">
+                <div class="detail-card__header">
+                    <mat-icon class="detail-card__icon">history</mat-icon>
+                    <h2 class="detail-card__title">Activity</h2>
+                </div>
+
+                @if (patientService.isAuditLogsLoading()) {
+                <div class="activity-item">
+                    <div class="activity-item__icon"><mat-icon>hourglass_empty</mat-icon></div>
+                    <div>
+                        <div class="activity-item__label" style="color: var(--text-muted)">Loading activity...</div>
+                    </div>
+                </div>
+                } @else if (patientService.auditLogs().length === 0) {
+                <div class="activity-item">
+                    <div class="activity-item__icon"><mat-icon>history_toggle_off</mat-icon></div>
+                    <div>
+                        <div class="activity-item__label field-empty">No activity recorded.</div>
+                    </div>
+                </div>
+                } @else {
+                @for (log of patientService.auditLogs(); track log.occurredAt) {
+                <div class="activity-item">
+                    <div class="activity-item__icon">
+                        <mat-icon>{{ getActivityIcon(log.action, log.changedProperties) }}</mat-icon>
+                    </div>
+                    <div>
+                        <div class="activity-item__label">{{ formatActivityLabel(log) }}</div>
+                        <div class="activity-item__date">
+                            {{ log.occurredAt | date: 'MMM d, yyyy · h:mm a' }}
+                            @if (log.performedBy) {
+                            <span class="activity-item__actor"> · {{ log.performedBy }}</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+                }
+                }
+            </div>
+            }
+        </div>
+    </div>
+
+    @if (dialogConfig(); as config) {
+    <app-confirm-dialog [config]="config" (confirmed)="confirmStatusChange()" (cancelled)="pendingStatus.set(null)" />
+    }
+
+    }
+
+</div>

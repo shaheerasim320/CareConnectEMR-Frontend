@@ -34,14 +34,20 @@ export class PatientList implements OnInit {
 
   readonly searchControl = new FormControl('');
   readonly searchValue = signal('');
+
   readonly statusFilter = signal<PatientStatus | 'All'>('All');
   readonly selectedStatus = signal<PatientStatus | 'All'>('All');
+
   readonly currentPage = signal(1);
   readonly currentPageSize = signal(10);
+
   readonly pendingStatusPatient = signal<Patient | null>(null);
-  readonly isAdmin = computed(() => this.authService.currentUser()?.role === 'Admin');
 
   readonly PERMISSIONS = PERMISSIONS;
+
+  readonly canManageStatus = computed(() =>
+    hasPermission(this.authService.currentUser()?.role, PERMISSIONS.ManagePatientStatus)
+  );
 
   canCreatePatient(): boolean {
     const userRole = this.authService.currentUser()?.role;
@@ -50,7 +56,7 @@ export class PatientList implements OnInit {
 
   readonly activeFilters = computed(() => {
     const filters: string[] = [];
-    if (this.isAdmin() && this.statusFilter() !== 'All') {
+    if (this.canManageStatus() && this.statusFilter() !== 'All') {
       filters.push(`Status: ${this.statusFilter()}`);
     }
     return filters;
@@ -78,7 +84,7 @@ export class PatientList implements OnInit {
       const pageSize = this.toPageSize(params.get('pageSize'));
       const search = params.get('search') ?? '';
       const requestedStatus = params.get('status');
-      const status: PatientStatus | 'All' = this.isAdmin() && this.isPatientStatus(requestedStatus) ? requestedStatus : 'All';
+      const status: PatientStatus | 'All' = this.canManageStatus() && this.isPatientStatus(requestedStatus) ? requestedStatus : 'All';
 
       this.currentPage.set(page);
       this.currentPageSize.set(pageSize);
@@ -96,8 +102,8 @@ export class PatientList implements OnInit {
   }
 
   applyFilters(): void {
-    this.statusFilter.set(this.isAdmin() ? this.selectedStatus() : 'All');
-    this.updateListingUrl(1, this.currentPageSize(), this.isAdmin() ? this.selectedStatus() : 'All');
+    this.statusFilter.set(this.canManageStatus() ? this.selectedStatus() : 'All');
+    this.updateListingUrl(1, this.currentPageSize(), this.canManageStatus() ? this.selectedStatus() : 'All');
   }
 
   clearFilters(): void {
@@ -139,15 +145,15 @@ export class PatientList implements OnInit {
 
   loadPatients(page = 1) {
     this.currentPage.set(page);
-    const isAdmin = this.isAdmin();
+    const canManage = this.canManageStatus();
     const filter = this.statusFilter();
 
     this.patientService.loadList({
       page,
       pageSize: this.currentPageSize(),
       search: this.searchControl.value || undefined,
-      includeAll: isAdmin ? filter === 'All' : undefined,
-      status: isAdmin && filter !== 'All' ? filter : undefined
+      includeAll: canManage ? filter === 'All' : undefined,
+      status: canManage && filter !== 'All' ? filter : undefined
     }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
   }
 
@@ -156,7 +162,7 @@ export class PatientList implements OnInit {
       relativeTo: this.route,
       queryParams: {
         search: this.searchControl.value?.trim() || null,
-        status: this.isAdmin() && status !== 'All' ? status : null,
+        status: this.canManageStatus() && status !== 'All' ? status : null,
         page: page === 1 ? null : page,
         pageSize: pageSize === 10 ? null : pageSize,
       },
@@ -196,6 +202,16 @@ export class PatientList implements OnInit {
   );
 
   readonly hasActiveFilters = computed(() =>
-    !!(this.searchValue().trim()) || (this.isAdmin() && this.statusFilter() !== 'All')
+    !!(this.searchValue().trim()) || (this.canManageStatus() && this.statusFilter() !== 'All')
+  );
+
+  viewPatient(patient: Patient): void {
+    this.router.navigate([patient.id], {
+      relativeTo: this.route
+    });
+  }
+
+  readonly canExport = computed(() =>
+    hasPermission(this.authService.currentUser()?.role, PERMISSIONS.ExportData)
   );
 }
